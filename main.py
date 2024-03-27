@@ -1,7 +1,9 @@
 """
 LACK's Franchise Analyser
 """
-from typing import Any
+from __future__ import annotations
+import csv
+from typing import Any, Union
 
 
 class _Vertex:
@@ -17,10 +19,10 @@ class _Vertex:
         - all(self in u.neighbours for u in self.neighbours)
     """
     item: Any
-    neighbours: set[_Vertex]
+    neighbours: dict[_Vertex, Union[int, float]]
 
 
-    def __init__(self, item: Any, neighbours: set[_Vertex], type: str) -> None:
+    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type: str) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.neighbours = neighbours
@@ -29,11 +31,11 @@ class _Vertex:
 class Franchise(_Vertex):
     """Subclass of Vertex used to represent a Franchise restaurant on our graph."""
     item: {}
-    neighbours: set[_Vertex]
+    neighbours: dict[_Vertex, Union[int, float]]
     type: str
 
-    def __init__(self, item: dict, neighbours: set[_Vertex], type="Franchise") -> None:
-        super().__init__(item, neighbours, type)
+    def __init__(self, item: dict, neighbours: dict[_Vertex, Union[int, float]], type="Franchise") -> None:
+        super().__init__(neighbours, type)
         self.item = item
         self.neighbours = neighbours
         self.type = type
@@ -43,13 +45,11 @@ class Landmark(_Vertex):
     """Subclass of Vertex used to represent a landmark on our graph. For example,
     a TTC station or a monument in Toronto."""
     item: Any
-    neighbours: set[_Vertex]
+    neighbours: dict[_Vertex, Union[int, float]]
     type: str
 
-    def __init__(self, item: str, neighbours: set[_Vertex], type="Landmark") -> None:
+    def __init__(self, item: str, neighbours: dict[_Vertex, Union[int, float]], type="Landmark") -> None:
         super().__init__(item, neighbours, type)
-        self.item = item
-        self.neighbours = neighbours
         self.type = type
 
 
@@ -71,15 +71,20 @@ class Graph:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any) -> None:
+    def add_vertex(self, item: Any, type: str) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
-        self._vertices[item] = _Vertex(item, set())
+        if item not in self._vertices:
+            if type == 'Franchise':
+                self._vertices[item] = Franchise(item)
+            else:
+                self._vertices[item] = Landmark(item)
 
-    def add_edge(self, item1: Any, item2: Any) -> None:
-        """Add an edge between the two vertices with the given items in this graph.
+    def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
+        """Add an edge between the two vertices with the given items in this graph,
+        with the given weight.
 
         Raise a ValueError if item1 or item2 do not appear as vertices in this graph.
 
@@ -91,8 +96,8 @@ class Graph:
             v2 = self._vertices[item2]
 
             # Add the new edge
-            v1.neighbours.add(v2)
-            v2.neighbours.add(v1)
+            v1.neighbours[v2] = weight
+            v2.neighbours[v1] = weight
         else:
             # We didn't find an existing vertex for both items.
             raise ValueError
