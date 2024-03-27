@@ -1,9 +1,10 @@
 """
 File that runs the main program
+TODO: Finish file dosctring
 """
 
 
-def get_user_data(input: str) -> None:
+def get_franchise_locations(location1: str, location2: str) -> None:
     """
     Gets user's input (i.e. Franchise location).
 
@@ -43,3 +44,14 @@ def visualize_square_graph():
     """
     Creates a square graph visualization of the intangible Franchise data.
     """
+
+
+# Main program loop
+
+state = True
+print("What are the locations of the franchises you want to analyse?\n")
+location1 = input("Write the name of the first location: ").strip()
+location2 = input("\nWrite the name of the second location: ").strip()
+get_franchise_locations(location1, location2)
+
+while not state:

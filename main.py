@@ -1,5 +1,6 @@
 """
 LACK's Franchise Analyser
+TODO: Finish file dosctring
 """
 from typing import Any
 
