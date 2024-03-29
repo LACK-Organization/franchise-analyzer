@@ -12,7 +12,7 @@ class _Vertex:
     Instance Attributes:
         - item: The data stored in this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
-        - type: The type of vertex in our graph. (Franchise or Landmark)
+        - type_of_vertex: The type of vertex in our graph. (Franchise or Landmark)
         - coordinates: The (x,y) coordinates of the vertex on our map.
 
     Representation Invariants:
@@ -21,14 +21,14 @@ class _Vertex:
     """
     item: Any
     neighbours: dict[_Vertex, Union[int, float]]
-    type: str
+    type_of_vertex: str
     coordinates = tuple[int]
 
-    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type: str, coordinates: tuple[int]) -> None:
+    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.neighbours = neighbours
-        self.type = type
+        self.type_of_vertex = type_of_vertex
         self.coordinates = coordinates
 
 class Graph:
@@ -47,16 +47,14 @@ class Graph:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any, type: str) -> None:
+    def add_vertex(self, item: Any, type_of_vertex: str, coordinates: tuple[int]) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
         if item not in self._vertices:
-            if type == 'Franchise':
-                self._vertices[item] = Franchise(item, {}, 'Franchise')
-            else:
-                self._vertices[item] = Landmark(item, {}, 'Landmark')
+            self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates)
+
 
     def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
