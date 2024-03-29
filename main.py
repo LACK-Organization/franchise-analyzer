@@ -12,7 +12,8 @@ class _Vertex:
     Instance Attributes:
         - item: The data stored in this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
-        - type: The type of vertex in our graph.
+        - type: The type of vertex in our graph. (Franchise or Landmark)
+        - coordinates: The (x,y) coordinates of the vertex on our map.
 
     Representation Invariants:
         - self not in self.neighbours
@@ -20,40 +21,15 @@ class _Vertex:
     """
     item: Any
     neighbours: dict[_Vertex, Union[int, float]]
+    type: str
+    coordinates = tuple[int]
 
-
-    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type: str) -> None:
+    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type: str, coordinates: tuple[int]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.neighbours = neighbours
         self.type = type
-
-class Franchise(_Vertex):
-    """Subclass of Vertex used to represent a Franchise restaurant on our graph."""
-    item: {}
-    neighbours: dict[_Vertex, Union[int, float]]
-    type: str
-
-    def __init__(self, item: dict, neighbours: dict[_Vertex, Union[int, float]], type="Franchise") -> None:
-        super().__init__(neighbours, type)
-        self.item = item
-        self.neighbours = neighbours
-        self.type = type
-
-
-class Landmark(_Vertex):
-    """Subclass of Vertex used to represent a landmark on our graph. For example,
-    a TTC station or a monument in Toronto."""
-    item: Any
-    neighbours: dict[_Vertex, Union[int, float]]
-    type: str
-
-    def __init__(self, item: str, neighbours: dict[_Vertex, Union[int, float]], type="Landmark") -> None:
-        super().__init__(item, neighbours, type)
-        self.type = type
-
-
-
+        self.coordinates = coordinates
 
 class Graph:
     """A graph.
@@ -78,9 +54,9 @@ class Graph:
         """
         if item not in self._vertices:
             if type == 'Franchise':
-                self._vertices[item] = Franchise(item)
+                self._vertices[item] = Franchise(item, {}, 'Franchise')
             else:
-                self._vertices[item] = Landmark(item)
+                self._vertices[item] = Landmark(item, {}, 'Landmark')
 
     def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
