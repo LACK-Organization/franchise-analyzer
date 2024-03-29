@@ -31,6 +31,7 @@ class _Vertex:
         self.type_of_vertex = type_of_vertex
         self.coordinates = coordinates
 
+
 class Graph:
     """A graph.
 
@@ -54,7 +55,6 @@ class Graph:
         """
         if item not in self._vertices:
             self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates)
-
 
     def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
