@@ -15,6 +15,8 @@ class _Vertex:
         - neighbours: The vertices that are adjacent to this vertex.
         - type_of_vertex: The type of vertex in our graph. (Franchise or Landmark)
         - coordinates: The (x,y) coordinates of the vertex on our map.
+        - cluster: An integer representing the cluster the vertex is a part of. A cluster value
+        of 0 means that the vertex is not part of any cluster.
 
     Representation Invariants:
         - self not in self.neighbours
@@ -24,6 +26,7 @@ class _Vertex:
     neighbours: dict[_Vertex, Union[int, float]]
     type_of_vertex: str
     coordinates = tuple[int]
+    cluser: int
 
     def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int]) -> None:
         """Initialize a new vertex with the given item and neighbours."""
