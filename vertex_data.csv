@@ -1,0 +1,8 @@
+MCD,QueenSpadina,ClusterVal,traffic around restaurant,reviews,crime rate,operating hours,drive thru,wifi
+MCD,AGO,ClusterVal,traffic around restaurant,reviews,crime rate,operating hours,drive thru,wifi
+Landmark,ClusterVal,Park,ClusterVal,traffic around landmark
+Landmark,ClusterVal,AGO,ClusterVal,traffic arround landmark
+TTC,ClusterVal,Name,traffic,Reliableness
+Intersection,ClusterVal,Bike per car ratio,Vehicle Traffic Volume,Pedestrian Traffic Volume
+OtherRestaurant,ClusterVal,traffic around restaurant,reviews
+
