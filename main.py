@@ -28,12 +28,13 @@ class _Vertex:
     coordinates = tuple[int]
     cluser: int
 
-    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int]) -> None:
+    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.neighbours = neighbours
         self.type_of_vertex = type_of_vertex
         self.coordinates = coordinates
+        self.cluser = cluster
 
 
 class Graph:
@@ -52,13 +53,13 @@ class Graph:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any, type_of_vertex: str, coordinates: tuple[int]) -> None:
+    def add_vertex(self, item: Any, type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
         if item not in self._vertices:
-            self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates)
+            self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates, cluster)
 
     def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
