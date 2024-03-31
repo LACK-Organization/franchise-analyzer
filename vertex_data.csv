@@ -1,29 +1,29 @@
-MCD,QueenSpadina,ClusterVal,traffic around restaurant,pedestrian traffic, bike traffic,,reviews,crime rate,operating hours,drive thru,wifi
+MCD,QueenSpadina,ClusterVal,traffic around restaurant,pedestrian traffic, bike traffic,reviews,crime rate,operating hours,drive thru,wifi
 MCD,AGO,ClusterVal,traffic around restaurant,reviews,crime rate,operating hours,drive thru,wifi
 Landmark,ClusterVal,Name,Significance
 Landmark,ClusterVal,AGO,ClusterVal,traffic arround landmark
 TTC,ClusterVal,Name,traffic,Reliableness
 TTC,ClusterVal,Name,GoogleReviews(REVIEWxREVNUM)
 Intersection,ClusterVal,Bike per car ratio,Vehicle Traffic Volume,Pedestrian Traffic Volume
-OtherRestaurant,Name,ClusterVal,reviews, Client Similarity
+OtherRestaurant,ClusterVal,Name,reviews,Client Similarity
 
-MCD,QueenSpadina,4,27455,33667,2359,3.5,1.5,24,0,1
-MCD,AGO,13,16441,12216,830,3.4,2,13,0,0
-OtherRestaurant,Bhan Mi Boys,3,4.5,1
-OtherRestaurant,Popeyes,3,3.9,3
-OtherRestaurant,Kinton Ramen,3,4.4,1
-OtherRestaurant,Midori Ramen,2,4.4,1
-OtherRestaurant,Shelbys Shwarma,2,4.7,2
-OtherRestaurant,Raku,1,4.4,1
-OtherRestaurant,Juicy Dumpling,0,4.5,2
-OtherRestaurant,A&W,4,3.8,3
-OtherRestaurant,Chick-fil-A,0,4.4,3
+MCD,4,QueenSpadina,27455,33667,2359,3.5,1.5,24,0,1
+MCD,13,AGO,16441,12216,830,3.4,2,13,0,0
+OtherRestaurant,3,Banh Mi Boys,4.5,1
+OtherRestaurant,3,Popeyes,3.9,3
+OtherRestaurant,3,Kinton Ramen,4.4,1
+OtherRestaurant,2,Midori Ramen,4.4,1
+OtherRestaurant,2,Shelbys Shwarma,4.7,2
+OtherRestaurant,1,Raku,4.4,1
+OtherRestaurant,0,Juicy Dumpling,4.5,2
+OtherRestaurant,4,A&W,3.8,3
+OtherRestaurant,0,Chick-fil-A,4.4,3
 Landmark,14,AGO,2
 Landmark,14,Grange Park,4
 Landmark,14,OCAD,4.5
-Landmark,0,Graffiti Alley,4.5
-Intersection,QueenSpadina,4,0.09,27455,33667
-Intersection,DundasMcCaul,13,0.05,16441,12216
+Landmark,4,Graffiti Alley,4.5
+Intersection,4,QueenSpadina,0.09,27455,33667
+Intersection,13,DundasMcCaul,0.05,16441,12216
 TTC,11,Osgoode,5418
 TTC,12,StPatricks,3362
 TTC,5,DundasSpadinaSTC,528
