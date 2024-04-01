@@ -42,12 +42,15 @@ class Graph:
 
     Representation Invariants:
         - all(item == self._vertices[item].item for item in self._vertices)
+        - all(is_instance(self._vertices[item], list) for item in self._vertices if is_instance(item, int))
+        - all(is_instance(self._vertices[item], _Vertex) for item in self._vertices if is_instance(item, str))
+
+    Private Instance Attributes:
+        - _vertices:
+            A collection of the vertices contained in this graph.
+            Maps item to _Vertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    # Private Instance Attributes:
-    #     - _vertices:
-    #         A collection of the vertices contained in this graph.
-    #         Maps item to _Vertex object.
-    _vertices: dict[Any, _Vertex]
+    _vertices: dict[str | int, _Vertex | list[_Vertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
