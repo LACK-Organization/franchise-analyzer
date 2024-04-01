@@ -50,7 +50,7 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
     return data_mapping
 
 
-def get_weight() -> None:
+def get_weight(vertex_data: dict) -> None:
     return None
 
 
