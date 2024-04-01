@@ -7,7 +7,7 @@ import csv
 from typing import Any, Union
 
 def data_collector(datafile: str, name: str, type: str) -> dict:
-    """Return the data associtated with the vertex"""
+    """Return the data associtated with the vertex."""
     with open(datafile, 'r') as file1:
         reader = csv.reader(file1)
         data_mapping = {}
@@ -96,19 +96,29 @@ class Graph:
             A collection of the vertices contained in this graph.
             Maps item to _Vertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    _vertices: dict[str | int, _Vertex | list[_Vertex]]
+    _vertices: dict[str | int, _Vertex | dict[str, _Vertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any, type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
+    def add_vertex(self, item: Any, vertex_data: dict, cluster: int = 0) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
-        if item not in self._vertices:
-            self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates, cluster)
+        if cluster == 0:
+            if item not in self._vertices:
+                self._vertices[item] = _Vertex(item, vertex_data, {}, cluster)
+        else:
+            if cluster not in self._vertices:
+                self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
+            else:
+                self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
+                for neighbour in self._vertices[cluster]:
+                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                                                   # cycle.
+
 
     def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
@@ -122,26 +132,26 @@ class Graph:
         if item1 in self._vertices and item2 in self._vertices:
             v1 = self._vertices[item1]
             v2 = self._vertices[item2]
-            if v1.cluster_number == 0 and v2.cluster_number == 0:
+            if v1.cluster == 0 and v2.cluster == 0:
                 # Add the new edge
                 v1.neighbours[v2] = weight
                 v2.neighbours[v1] = weight
-            elif v1.cluster_number == 0 and v2.cluster_number != 0:
-                cluster = v2.cluster_number
+            elif v1.cluster == 0 and v2.cluster != 0:
+                cluster = v2.cluster
                 for i in self._vertices:
                     vertex = self._vertices[i]
-                    if vertex.cluster_number == cluster:
+                    if vertex.cluster == cluster:
                         v1.neighbours[vertex] = weight
                         vertex.neighbours[v1] = weight
-            elif v2.cluster_number == 0 and v1.cluster_number != 0:
-                cluster = v1.cluster_number
+            elif v2.cluster == 0 and v1.cluster != 0:
+                cluster = v1.cluster
                 for i in self._vertices:
                     vertex = self._vertices[i]
-                    if vertex.cluster_number == cluster:
+                    if vertex.cluster == cluster:
                         v2.neighbours[vertex] = weight
                         vertex.neighbours[v2] = weight
-            elif v1.cluster_number != 0 and v1.cluster_number != 0:
-                if v1.cluster_number == v2.cluster_number:
+            elif v1.cluster != 0 and v1.cluster != 0:
+                if v1.cluster == v2.cluster:
 
                 else:
 
