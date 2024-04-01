@@ -7,8 +7,8 @@ TTC,ClusterVal,Name,GoogleReviews(REVIEWxREVNUM)
 Intersection,ClusterVal,Bike per car ratio,Vehicle Traffic Volume,Pedestrian Traffic Volume
 OtherRestaurant,ClusterVal,Name,reviews,Client Similarity
 
-MCD,4,QueenSpadina,27455,33667,2359,3.5,1.5,24,0,1
-MCD,13,AGO,16441,12216,830,3.4,2,13,0,0
+MCD,4,QueenSpadina,27455,33667,2359,3.5,0.33,24,0,1
+MCD,13,AGO,16441,12216,830,3.4,0.5,13,0,0
 OtherRestaurant,3,Banh Mi Boys,4.5,1
 OtherRestaurant,3,Popeyes,3.9,3
 OtherRestaurant,3,Kinton Ramen,4.4,1
