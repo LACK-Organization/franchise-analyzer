@@ -7,7 +7,7 @@ import csv
 from typing import Any, Union
 
 def data_collector(datafile: str, name: str, type: str) -> dict:
-    """Return the data associtated with the vertex"""
+    """Return the data associtated with the vertex."""
     with open(datafile, 'r') as file1:
         reader = csv.reader(file1)
         data_mapping = {}
@@ -102,13 +102,23 @@ class Graph:
         """Initialize an empty graph (no vertices or edges)."""
         self._vertices = {}
 
-    def add_vertex(self, item: Any, type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
+    def add_vertex(self, item: Any, vertex_data: dict, cluster: int = 0) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
-        if item not in self._vertices:
-            self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates, cluster)
+        if cluster == 0:
+            if item not in self._vertices:
+                self._vertices[item] = _Vertex(item, vertex_data, {}, cluster)
+        else:
+            if cluster not in self._vertices:
+                self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
+            else:
+                self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
+                for neighbour in self._vertices[cluster]:
+                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                                                   # cycle.
+
 
     def add_edge(self, item1: str | int, item2: str | int, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
