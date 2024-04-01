@@ -96,7 +96,7 @@ class Graph:
             A collection of the vertices contained in this graph.
             Maps item to _Vertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    _vertices: dict[str | int, _Vertex | list[_Vertex]]
+    _vertices: dict[str | int, _Vertex | dict[str, _Vertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
@@ -110,7 +110,7 @@ class Graph:
         if item not in self._vertices:
             self._vertices[item] = _Vertex(item, {}, type_of_vertex, coordinates, cluster)
 
-    def add_edge(self, item1: Any, item2: Any, weight: Union[int, float] = 1) -> None:
+    def add_edge(self, item1: str | int, item2: str | int, weight: Union[int, float] = 1) -> None:
         """Add an edge between the two vertices with the given items in this graph,
         with the given weight.
 
@@ -119,36 +119,23 @@ class Graph:
         Preconditions:
             - item1 != item2
         """
-        if item1 in self._vertices and item2 in self._vertices:
+        if not (item1 in self._vertices and item2 in self._vertices):
+            raise ValueError
+        else:
             v1 = self._vertices[item1]
             v2 = self._vertices[item2]
-            if v1.cluster_number == 0 and v2.cluster_number == 0:
-                # Add the new edge
+            if v1.cluster != 0 and v2.cluster == 0:
+                v1[list(self._vertices.keys())[0]].neighbours[v2] = weight
+                v2.neighbours[v1] = weight
+            elif v1.cluster == 0 and v2.cluster != 0:
+                v1.neighbours[v2] = weight
+                v2[list(self._vertices.keys())[0]].neighbours[v1] = weight
+            elif v1.cluster != 0 and v2.cluster != 0:
+                v1[list(self._vertices.keys())[0]].neighbours[v2] = weight
+                v2[list(self._vertices.keys())[0]].neighbours[v1] = weight
+            else:
                 v1.neighbours[v2] = weight
                 v2.neighbours[v1] = weight
-            elif v1.cluster_number == 0 and v2.cluster_number != 0:
-                cluster = v2.cluster_number
-                for i in self._vertices:
-                    vertex = self._vertices[i]
-                    if vertex.cluster_number == cluster:
-                        v1.neighbours[vertex] = weight
-                        vertex.neighbours[v1] = weight
-            elif v2.cluster_number == 0 and v1.cluster_number != 0:
-                cluster = v1.cluster_number
-                for i in self._vertices:
-                    vertex = self._vertices[i]
-                    if vertex.cluster_number == cluster:
-                        v2.neighbours[vertex] = weight
-                        vertex.neighbours[v2] = weight
-            elif v1.cluster_number != 0 and v1.cluster_number != 0:
-                if v1.cluster_number == v2.cluster_number:
-
-                else:
-
-
-        else:
-            # We didn't find an existing vertex for both items.
-            raise ValueError
 
     def adjacent(self, item1: Any, item2: Any) -> bool:
         """Return whether item1 and item2 are adjacent vertices in this graph.
