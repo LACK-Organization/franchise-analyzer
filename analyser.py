@@ -1,8 +1,8 @@
 import csv
-"""
-File that runs the main program
-TODO: Finish file dosctring
-"""
+
+"""File that runs the main program
+TODO: Finish file dosctring"""
+
 
 def data_collector(datafile: str, name: str, type: str) -> dict:
     """Return the data associtated with the vertex"""
@@ -49,13 +49,12 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
     return data_mapping
 
 
-
 def get_franchise_locations(location1: str, location2: str) -> None:
     """
     Gets user's input (i.e. Franchise location).
 
     This function will take the user's input, which will consist of the locations of the franchises they wish to analyze
-    and compare. The function will find the franchises from the dtataset using these locations.
+    and compare. The function will find the franchises from the dataset using these locations.
 
     Preconditions:
         - input != ''
@@ -90,6 +89,16 @@ def visualize_square_graph():
     """
     Creates a square graph visualization of the intangible Franchise data.
     """
+
+
+def edge_data(edge_file: str) -> dict:
+    """Return the data corresponding to every road in the region."""
+
+    with open(edge_file, 'r') as roads:
+        reader = csv.reader(roads)
+        for row in reader:
+
+
 
 
 # Main program loop
