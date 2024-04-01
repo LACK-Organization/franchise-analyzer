@@ -60,36 +60,27 @@ class _Vertex:
     """A vertex in a graph.
 
     Instance Attributes:
-<<<<<<< HEAD
-        - item: The name of self.
-        - neighbours: The vertices that are adjacent to self, along with the weight of the edge between self and each
-                      neighbouring vertex.
-        - cluster: An integer representing the cluster self is a part of. A cluster value of 0 means that self is not
-                   part of any cluster.
-=======
         - item: The name of this vertex.
         - vertex_data: The data stored within this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
-        - type_of_vertex: The type of vertex in our graph. (Franchise or Landmark)
-        - coordinates: The (x,y) coordinates of the vertex on our map.
         - cluster: An integer representing the cluster the vertex is a part of. A cluster value
         of 0 means that the vertex is not part of any cluster.
->>>>>>> main
 
     Representation Invariants:
         - self not in self.neighbours
         - all(self in u.neighbours for u in self.neighbours)
     """
+    item: str
+    vertex_data = dict
+    neighbours: dict[_Vertex, Union[int, float]]
+    cluster: int
 
-
-    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
+    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], cluster: int) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.vertex_data = vertex_data
         self.neighbours = neighbours
-        self.type_of_vertex = type_of_vertex
-        self.coordinates = coordinates
-        self.cluser = cluster
+        self.cluster = cluster
 
 
 class Graph:
