@@ -63,8 +63,6 @@ class _Vertex:
         - item: The name of this vertex.
         - vertex_data: The data stored within this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
-        - type_of_vertex: The type of vertex in our graph. (Franchise or Landmark)
-        - coordinates: The (x,y) coordinates of the vertex on our map.
         - cluster: An integer representing the cluster the vertex is a part of. A cluster value
         of 0 means that the vertex is not part of any cluster.
 
@@ -75,18 +73,14 @@ class _Vertex:
     item: str
     vertex_data = dict
     neighbours: dict[_Vertex, Union[int, float]]
-    type_of_vertex: str
-    coordinates = tuple[int]
-    cluser: int
+    cluster: int
 
-    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
+    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], cluster: int) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.vertex_data = vertex_data
         self.neighbours = neighbours
-        self.type_of_vertex = type_of_vertex
-        self.coordinates = coordinates
-        self.cluser = cluster
+        self.cluster = cluster
 
 
 class Graph:
@@ -128,10 +122,30 @@ class Graph:
         if item1 in self._vertices and item2 in self._vertices:
             v1 = self._vertices[item1]
             v2 = self._vertices[item2]
+            if v1.cluster_number == 0 and v2.cluster_number == 0:
+                # Add the new edge
+                v1.neighbours[v2] = weight
+                v2.neighbours[v1] = weight
+            elif v1.cluster_number == 0 and v2.cluster_number != 0:
+                cluster = v2.cluster_number
+                for i in self._vertices:
+                    vertex = self._vertices[i]
+                    if vertex.cluster_number == cluster:
+                        v1.neighbours[vertex] = weight
+                        vertex.neighbours[v1] = weight
+            elif v2.cluster_number == 0 and v1.cluster_number != 0:
+                cluster = v1.cluster_number
+                for i in self._vertices:
+                    vertex = self._vertices[i]
+                    if vertex.cluster_number == cluster:
+                        v2.neighbours[vertex] = weight
+                        vertex.neighbours[v2] = weight
+            elif v1.cluster_number != 0 and v1.cluster_number != 0:
+                if v1.cluster_number == v2.cluster_number:
 
-            # Add the new edge
-            v1.neighbours[v2] = weight
-            v2.neighbours[v1] = weight
+                else:
+
+
         else:
             # We didn't find an existing vertex for both items.
             raise ValueError
