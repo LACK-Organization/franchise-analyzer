@@ -1,4 +1,4 @@
-MCD,QueenSpadina,ClusterVal,traffic around restaurant,pedestrian traffic, bike traffic,reviews,crime rate,operating hours,drive thru,wifi
+MCD,QueenSpadina,ClusterVal,traffic around restaurant,pedestrian traffic, bike traffic,reviews,operating hours,drive thru,wifi
 MCD,AGO,ClusterVal,traffic around restaurant,reviews,crime rate,operating hours,drive thru,wifi
 Landmark,ClusterVal,Name,Significance
 Landmark,ClusterVal,AGO,ClusterVal,traffic arround landmark
@@ -7,8 +7,8 @@ TTC,ClusterVal,Name,GoogleReviews(REVIEWxREVNUM)
 Intersection,ClusterVal,Bike per car ratio,Vehicle Traffic Volume,Pedestrian Traffic Volume
 OtherRestaurant,ClusterVal,Name,reviews,Client Similarity
 
-MCD,4,QueenSpadina,27455,33667,2359,3.5,1.5,24,0,1
-MCD,13,AGO,16441,12216,830,3.4,2,13,0,0
+MCD,4,QueenSpadina,27455,33667,2359,3.5,24,0,1
+MCD,13,AGO,16441,12216,830,3.4,13,0,0
 OtherRestaurant,3,Banh Mi Boys,4.5,1
 OtherRestaurant,3,Popeyes,3.9,3
 OtherRestaurant,3,Kinton Ramen,4.4,1
