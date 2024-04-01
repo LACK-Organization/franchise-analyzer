@@ -50,10 +50,17 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
     return data_mapping
 
 
-def get_weight(vertex_data: dict) -> None:
-    return None
 
 
+
+def _get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
+    with open(edge_data, 'r') as file:
+        reader = csv.reader(file)
+        weight = 0
+        for row in reader:
+            if (str(row[0]) == vertex1 or str(row[0]) == vertex2) and (str(row[1]) == vertex1 or str(row[1]) == vertex2):
+                weight = 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
+        return weight
 
 
 class _Vertex:
