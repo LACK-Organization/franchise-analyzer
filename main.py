@@ -21,10 +21,9 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
                     data_mapping['Pedestrian Traffic'] = int(row[4])
                     data_mapping['Bike Traffic'] = int(row[5])
                     data_mapping['Reviews'] = int(row[6])
-                    data_mapping['Crime Rate'] = int(row[7])
-                    data_mapping['Operating Hours'] = int(row[8])
-                    data_mapping['Drive Through'] = int(row[9])
-                    data_mapping['Wifi'] = int(row[10])
+                    data_mapping['Operating Hours'] = int(row[7])
+                    data_mapping['Drive Through'] = int(row[8])
+                    data_mapping['Wifi'] = int(row[9])
                 elif str(row[0]) == 'OtherRestaurant':
                     data_mapping['Type'] = str(row[0])
                     data_mapping['Cluster'] = int(row[1])
