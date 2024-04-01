@@ -6,28 +6,86 @@ from __future__ import annotations
 import csv
 from typing import Any, Union
 
+def data_collector(datafile: str, name: str, type: str) -> dict:
+    """Return the data associtated with the vertex"""
+    with open(datafile, 'r') as file1:
+        reader = csv.reader(file1)
+        data_mapping = {}
+        for row in reader:
+            if str(row[2]) == name and row[0] == type:
+                if str(row[0]) == 'MCD':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Vehicular Traffic'] = int(row[3])
+                    data_mapping['Pedestrian Traffic'] = int(row[4])
+                    data_mapping['Bike Traffic'] = int(row[5])
+                    data_mapping['Reviews'] = int(row[6])
+                    data_mapping['Operating Hours'] = int(row[7])
+                    data_mapping['Drive Through'] = int(row[8])
+                    data_mapping['Wifi'] = int(row[9])
+                elif str(row[0]) == 'OtherRestaurant':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Reviews'] = int(row[3])
+                    data_mapping['Client Similarity'] = int(row[4])
+                elif str(row[0]) == 'Landmark':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Significance'] = int(row[3])
+                elif str(row[0]) == 'Intersection':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Bike Per Car Ratio'] = str(row[3])
+                    data_mapping['Vehicular Traffic'] = str(row[4])
+                    data_mapping['Pedestrian Traffic Traffic'] = str(row[5])
+                else:
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Google Reviews'] = int(row[3])
+    return data_mapping
+
+
+def get_weight() -> None:
+    return None
+
+
+
 
 class _Vertex:
     """A vertex in a graph.
 
     Instance Attributes:
+<<<<<<< HEAD
         - item: The name of self.
         - neighbours: The vertices that are adjacent to self, along with the weight of the edge between self and each
                       neighbouring vertex.
         - cluster: An integer representing the cluster self is a part of. A cluster value of 0 means that self is not
                    part of any cluster.
+=======
+        - item: The name of this vertex.
+        - vertex_data: The data stored within this vertex.
+        - neighbours: The vertices that are adjacent to this vertex.
+        - type_of_vertex: The type of vertex in our graph. (Franchise or Landmark)
+        - coordinates: The (x,y) coordinates of the vertex on our map.
+        - cluster: An integer representing the cluster the vertex is a part of. A cluster value
+        of 0 means that the vertex is not part of any cluster.
+>>>>>>> main
 
     Representation Invariants:
         - self not in self.neighbours
         - all(self in u.neighbours for u in self.neighbours)
     """
-    item: Any
-    neighbours: dict[_Vertex, Union[int, float]]
-    cluster_number: int
 
-    def __init__(self, item: Any, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
+
+    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], type_of_vertex: str, coordinates: tuple[int], cluster: int) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
+        self.vertex_data = vertex_data
         self.neighbours = neighbours
         self.type_of_vertex = type_of_vertex
         self.coordinates = coordinates
@@ -39,12 +97,15 @@ class Graph:
 
     Representation Invariants:
         - all(item == self._vertices[item].item for item in self._vertices)
+        - all(is_instance(self._vertices[item], list) for item in self._vertices if is_instance(item, int))
+        - all(is_instance(self._vertices[item], _Vertex) for item in self._vertices if is_instance(item, str))
+
+    Private Instance Attributes:
+        - _vertices:
+            A collection of the vertices contained in this graph.
+            Maps item to _Vertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    # Private Instance Attributes:
-    #     - _vertices:
-    #         A collection of the vertices contained in this graph.
-    #         Maps item to _Vertex object.
-    _vertices: dict[Any, _Vertex]
+    _vertices: dict[str | int, _Vertex | list[_Vertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
