@@ -183,24 +183,24 @@ class DataEngine:
                 data_names_list = ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews',
                                   'Operating Hours', 'Drive Through', 'Wifi', 'Longitude', 'Latitude']
                 data_dict = self._map_name_to_data(data_names_list, row)
-                graph_map.add_vertex(row[2], data_dict, int(row[1]), (row[-2], row[-1]), row[0])
+                graph_map.add_vertex(row[2], data_dict, (row[-2], row[-1]), row[0], int(row[1]))
             elif str(row[0]) == 'OtherRestaurant':
                 data_names_list = ['Reviews', 'Client Similarity', 'Longitude', 'Latitude']
                 data_dict = self._map_name_to_data(data_names_list, row)
-                graph_map.add_vertex(row[2], data_dict, int(row[1]), (row[-2], row[-1]), row[0])
+                graph_map.add_vertex(row[2], data_dict, (row[-2], row[-1]), row[0], int(row[1]))
             elif str(row[0]) == 'Landmark':
                 data_names_list = ['Significance', 'Longitude', 'Latitude']
                 data_dict = self._map_name_to_data(data_names_list, row)
-                graph_map.add_vertex(row[2], data_dict, int(row[1]), (row[-2], row[-1]), row[0])
+                graph_map.add_vertex(row[2], data_dict, (row[-2], row[-1]), row[0], int(row[1]))
             elif str(row[0]) == 'Intersection':
                 data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic',
                                   'Longitude', 'Latitude']
                 data_dict = self._map_name_to_data(data_names_list, row)
-                graph_map.add_vertex(row[2], data_dict, int(row[1]), (row[-2], row[-1]), row[0])
+                graph_map.add_vertex(row[2], data_dict, (row[-2], row[-1]), row[0], int(row[1]))
             else:
                 data_names_list = ['Google Reviews', 'Longitude', 'Latitude']
                 data_dict = self._map_name_to_data(data_names_list, row)
-                graph_map.add_vertex(row[2], data_dict, int(row[1]), (row[-2], row[-1]), row[0])
+                graph_map.add_vertex(row[2], data_dict, (row[-2], row[-1]), row[0], int(row[1]))
 
     def _map_name_to_data(self, data_names: list[str], row: list) -> dict[str, Any]:
         """Helper function that returns a dictionary mapping each name from the given data_names list to its respective
