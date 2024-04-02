@@ -89,6 +89,40 @@ class _Vertex:
         self.neighbours = neighbours
         self.cluster = cluster
 
+    def best_score_to_franchise(self, vertex2: str, visited: set[_Vertex]):
+        """Calculate the best score between any two points on the graph based on the weighted edges.
+
+        Preconditions:
+         - vertex1 is in graph
+         - vertex2 is in graph
+         - graph is connected
+        """
+        score = 0
+        visited.add(self)
+        for neighbour in self.neighbours:
+            if neighbour not in visited:
+                if neighbour == vertex2:
+                    return self.neighbours[neighbour]
+                else:
+                    score += self.neighbours[neighbour]
+                    dict = {}
+                    for n in neighbour.neighbours:
+                        dict[n] = n.best_score_to_franchise(vertex2, visited)
+                        # TODO: Finish recursive case and figure out edge weights
+                        neighbour.best_score_to_franchise(vertex2, visited)
+
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
+        """
+        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+        customer's location. Uses the weighed edges to calculate the path with the highest score.
+
+        Preconditions:
+         -
+        """
+        score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
+        score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
+
+
 
 class Graph:
     """A graph.
@@ -177,25 +211,3 @@ class Graph:
             return {neighbour.item for neighbour in v.neighbours}
         else:
             raise ValueError
-
-    def best_score_to_franchise(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
-        """Calculate the best score between any two points on the graph based on the weighted edges.
-        """
-        score = 0
-
-        v = self._vertices[vertex1]
-        visited.add(self)
-        for neighbour in v.neighbours:
-            if neighbour not in visited:
-
-
-    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
-        """
-        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
-        customer's location. Uses the weighed edges to calculate the path with the highest score.
-
-        Preconditions:
-         -
-        """
-        score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
-        score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
