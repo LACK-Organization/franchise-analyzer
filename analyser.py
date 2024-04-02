@@ -20,12 +20,12 @@ def calculate_score(location1: str, graph: Graph, datafile: str) -> float:
     TODO (To be filled)
 
     Intangible data includes factors like customer reviews, customer service, infrastructure, number of
-    daily customers, ... TODO (To be filled)
+    daily customers, ... TO DO (To be filled)
 
     Preconditions:
         TODO: Fill this in
     """
-    vertex_data = data_collector(location1, datafile, 'MCD')
+    vertex_data = DataEngine.load_vertex_data(location1, datafile, 'MCD')
     score = 0
 
 
