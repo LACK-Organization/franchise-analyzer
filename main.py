@@ -125,8 +125,7 @@ class Graph:
 
 
 class DataEngine:
-    """A Data
-
+    """DataEngine generates a Graph based on the vertex and edge data we have.
     """
 
     def __init__(self) -> None:
