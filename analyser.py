@@ -1,27 +1,18 @@
+"""
+Title
+"""
+from main import *
 import csv
+
+
+
 
 """File that runs the main program
 TODO: Finish file dosctring"""
 
 
 
-
-
-def get_franchise_locations(location1: str, location2: str) -> None:
-    """
-    Gets user's input (i.e. Franchise location).
-
-    This function will take the user's input, which will consist of the locations of the franchises they wish to analyze
-    and compare. The function will find the franchises from the dataset using these locations.
-
-    Preconditions:
-        - input != ''
-        - all(i.isalnum() or i == '-' for i in input)
-        - input is a valid franchise location
-    """
-
-
-def calculate_score(location1_data: dict, location2_data: dict) -> tuple[float]:
+def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) -> tuple[float]:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -34,6 +25,7 @@ def calculate_score(location1_data: dict, location2_data: dict) -> tuple[float]:
     Preconditions:
         TODO: Fill this in
     """
+    all_vertices = data_collector(datafile)
 
 
 def visualize_map():
@@ -49,12 +41,23 @@ def visualize_square_graph():
     """
 
 
-def edge_data(edge_file: str) -> dict:
+def edge_data(edge_file: str) -> list[dict]:
     """Return the data corresponding to every road in the region."""
 
     with open(edge_file, 'r') as roads:
         reader = csv.reader(roads)
+        lst = []
+        mapping = {}
         for row in reader:
+            mapping['vertex1'] = row[0]
+            mapping['vertex2'] = row[1]
+            mapping['distance'] = row[2]
+            mapping['safety'] = row[3]
+            mapping['road hierarchy'] = row[4]
+            mapping['speed limit'] = row[5]
+            lst.append(mapping)
+    return lst
+
 
 
 

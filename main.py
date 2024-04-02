@@ -10,13 +10,13 @@ from typing import Any, Union
 
 
 
-def _get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
+def get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
     with open(edge_data, 'r') as file:
         reader = csv.reader(file)
         weight = 0
         for row in reader:
             if (str(row[0]) == vertex1 or str(row[0]) == vertex2) and (str(row[1]) == vertex1 or str(row[1]) == vertex2):
-                weight = 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
+                weight += 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
         return weight
 
 
@@ -79,8 +79,7 @@ class Graph:
                 self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
             else:
                 self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
-                for neighbour in self._vertices[cluster]:
-                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
 
@@ -122,12 +121,32 @@ class Graph:
         else:
             # We didn't find an existing vertex for both items.
             return False
+          
+         def best_score_to_franchise(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+        """Calculate the best score between any two points on the graph based on the weighted edges.
+        """
+        score = 0
 
+        v = self._vertices[vertex1]
+        visited.add(self)
+        for neighbour in v.neighbours:
+            if neighbour not in visited:
+
+
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
+        """
+        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+        customer's location. Uses the weighed edges to calculate the path with the highest score.
+
+        Preconditions:
+         -
+        """
+        score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
+        score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
 
 class DataEngine:
     """DataEngine generates a Graph based on the vertex and edge data we have.
     """
-
     def __init__(self) -> None:
 
     def load_vertex_data(self, datafile: str, name: str, type: str) -> dict:
