@@ -12,7 +12,7 @@ TODO: Finish file dosctring"""
 
 
 
-def calculate_score(location1: str, graph: Graph, datafile: str) -> float:
+def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> float:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -25,8 +25,21 @@ def calculate_score(location1: str, graph: Graph, datafile: str) -> float:
     Preconditions:
         TODO: Fill this in
     """
-    vertex_data = data_collector(location1, datafile, 'MCD')
     score = 0
+    mcd_1 = ''
+    mcd_2 = ''
+    for v in graph.vertices:
+        if isinstance(graph.vertices[v], int):
+            for vertex in graph.vertices[v]:
+                vertex_vertex = graph.vertices[v][vertex]
+                if vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'QueenSpadina':
+                    mcd_1 = vertex
+                elif vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'AGO':
+                    mcd_2 = vertex
+    for point in graph.vertices:
+        # path1 =
+
+
 
 
 
@@ -46,7 +59,7 @@ def visualize_square_graph():
 
 
 def edge_data(vertex1: str | int, vertex2: str | int, edge_file: str) -> dict:
-    """Return the data corresponding to every road in the region."""
+    """Return the data corresponding to the edge between vertex1 and vertex2."""
 
     with open(edge_file, 'r') as roads:
         reader = csv.reader(roads)

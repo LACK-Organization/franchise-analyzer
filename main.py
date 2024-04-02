@@ -29,6 +29,7 @@ class _WeightedVertex:
         - neighbours: The vertices that are adjacent to this vertex.
         - cluster: An integer representing the cluster the vertex is a part of. A cluster value
         of 0 means that the vertex is not part of any cluster.
+        - coordinates: The coordinates of the vertex.
 
     Representation Invariants:
         - self not in self.neighbours
@@ -38,13 +39,18 @@ class _WeightedVertex:
     vertex_data = dict
     neighbours: dict[_WeightedVertex, Union[int, float]]
     cluster: int
+    coordinates: tuple[float]
+    vertex_type: str
 
-    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_WeightedVertex, Union[int, float]], cluster: int) -> None:
+    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_WeightedVertex, Union[int, float]], cluster: int,
+                 coordinates: tuple[float], vertex_type: str) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.vertex_data = vertex_data
         self.neighbours = neighbours
         self.cluster = cluster
+        self.coordinates = coordinates
+        self.vertex_type: vertex_type
 
 
 class WeightedGraph:
@@ -60,25 +66,29 @@ class WeightedGraph:
             A collection of the vertices contained in this graph.
             Maps item to _WeightedVertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    _vertices: dict[str | int, _WeightedVertex | dict[str, _WeightedVertex]]
+    vertices: dict[str | int, _WeightedVertex | dict[str, _WeightedVertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
-        self._vertices = {}
+        self.vertices = {}
 
-    def add_vertex(self, item: Any, vertex_data: dict, cluster: int = 0) -> None:
+    def add_vertex(self, item: Any, vertex_data: dict, coordinates: tuple[float], vertex_type: str,
+                   cluster: int = 0) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
         if cluster == 0:
-            if item not in self._vertices:
-                self._vertices[item] = _WeightedVertex(item, vertex_data, {}, cluster)
+            if item not in self.vertices:
+                self.vertices[item] = _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
+                                                       vertex_type)
         else:
-            if cluster not in self._vertices:
-                self._vertices[cluster] = {item: _WeightedVertex(item, vertex_data, {}, cluster)}
+            if cluster not in self.vertices:
+                self.vertices[cluster] = {item: _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
+                                                                 vertex_type)}
             else:
-                self._vertices[cluster][item] = _WeightedVertex(item, vertex_data, {}, cluster)
+                self.vertices[cluster][item] = _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
+                                                                vertex_type)
                 # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
@@ -92,20 +102,20 @@ class WeightedGraph:
         Preconditions:
             - item1 != item2
         """
-        if not (item1 in self._vertices and item2 in self._vertices):
+        if not (item1 in self.vertices and item2 in self.vertices):
             raise ValueError
         else:
-            v1 = self._vertices[item1]
-            v2 = self._vertices[item2]
+            v1 = self.vertices[item1]
+            v2 = self.vertices[item2]
             if v1.cluster != 0 and v2.cluster == 0:
-                v1[list(self._vertices.keys())[0]].neighbours[v2] = weight
+                v1[list(self.vertices.keys())[0]].neighbours[v2] = weight
                 v2.neighbours[v1] = weight
             elif v1.cluster == 0 and v2.cluster != 0:
                 v1.neighbours[v2] = weight
-                v2[list(self._vertices.keys())[0]].neighbours[v1] = weight
+                v2[list(self.vertices.keys())[0]].neighbours[v1] = weight
             elif v1.cluster != 0 and v2.cluster != 0:
-                v1[list(self._vertices.keys())[0]].neighbours[v2] = weight
-                v2[list(self._vertices.keys())[0]].neighbours[v1] = weight
+                v1[list(self.vertices.keys())[0]].neighbours[v2] = weight
+                v2[list(self.vertices.keys())[0]].neighbours[v1] = weight
             else:
                 v1.neighbours[v2] = weight
                 v2.neighbours[v1] = weight
@@ -115,19 +125,19 @@ class WeightedGraph:
 
         Return False if item1 or item2 do not appear as vertices in this graph.
         """
-        if item1 in self._vertices and item2 in self._vertices:
-            v1 = self._vertices[item1]
+        if item1 in self.vertices and item2 in self.vertices:
+            v1 = self.vertices[item1]
             return any(v2.item == item2 for v2 in v1.neighbours)
         else:
             # We didn't find an existing vertex for both items.
             return False
 
-    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[Vertex]):
+    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[_WeightedVertex]):
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
         score = 0
 
-        v = self._vertices[vertex1]
+        v = self.vertices[vertex1]
         for neighbour in v.neighbours:
             if neighbour not in visited:
 
