@@ -12,7 +12,7 @@ TODO: Finish file dosctring"""
 
 
 
-def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) -> tuple[float]:
+def calculate_score(location1: str, graph: Graph, datafile: str) -> float:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -25,7 +25,11 @@ def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) ->
     Preconditions:
         TODO: Fill this in
     """
-    all_vertices = data_collector(datafile)
+    vertex_data = data_collector(location1, datafile, 'MCD')
+    score = 0
+
+
+
 
 
 def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
@@ -58,22 +62,21 @@ def visualize_square_graph():
     """
 
 
-def edge_data(edge_file: str) -> list[dict]:
+def edge_data(vertex1: str | int, vertex2: str | int, edge_file: str) -> dict:
     """Return the data corresponding to every road in the region."""
 
     with open(edge_file, 'r') as roads:
         reader = csv.reader(roads)
-        lst = []
         mapping = {}
         for row in reader:
-            mapping['vertex1'] = row[0]
-            mapping['vertex2'] = row[1]
-            mapping['distance'] = row[2]
-            mapping['safety'] = row[3]
-            mapping['road hierarchy'] = row[4]
-            mapping['speed limit'] = row[5]
-            lst.append(mapping)
-    return lst
+            if row[0] == vertex1 and row[1] == vertex2:
+                mapping['vertex1'] = row[0]
+                mapping['vertex2'] = row[1]
+                mapping['distance'] = row[2]
+                mapping['safety'] = row[3]
+                mapping['road hierarchy'] = row[4]
+                mapping['speed limit'] = row[5]
+    return mapping
 
 
 
