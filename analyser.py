@@ -20,7 +20,7 @@ def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> floa
     TODO (To be filled)
 
     Intangible data includes factors like customer reviews, customer service, infrastructure, number of
-    daily customers, ... TODO (To be filled)
+    daily customers, ... TO DO (To be filled)
 
     Preconditions:
         TODO: Fill this in
