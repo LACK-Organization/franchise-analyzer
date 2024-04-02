@@ -122,20 +122,6 @@ class Graph:
             # We didn't find an existing vertex for both items.
             return False
 
-
-class DataEngine:
-    """DataEngine generates a Graph based on the vertex and edge data we have.
-    """
-
-<<<<<<<<< Temporary merge branch 1
-        Raise a ValueError if item does not appear as a vertex in this graph.
-        """
-        if item in self._vertices:
-            v = self._vertices[item]
-            return {neighbour.item for neighbour in v.neighbours}
-        else:
-            raise ValueError
-
     def best_score(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
@@ -144,7 +130,11 @@ class DataEngine:
         v = self._vertices[vertex1]
         for neighbour in v.neighbours:
             if neighbour not in visited:
-=========
+
+
+class DataEngine:
+    """DataEngine generates a Graph based on the vertex and edge data we have.
+    """
     def __init__(self) -> None:
 
     def load_vertex_data(self, datafile: str, name: str, type: str) -> dict:
@@ -177,4 +167,3 @@ class DataEngine:
                         for i in range(len(name_list)):
                             data_mapping[name_list[i]] = str(row[i])
         return data_mapping
->>>>>>>>> Temporary merge branch 2
