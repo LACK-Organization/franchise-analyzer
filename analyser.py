@@ -15,7 +15,7 @@ TODO: Finish file dosctring"""
 
 
 
-def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) -> tuple[float]:
+def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> float:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -23,28 +23,28 @@ def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) ->
     TODO (To be filled)
 
     Intangible data includes factors like customer reviews, customer service, infrastructure, number of
-    daily customers, ... TODO (To be filled)
+    daily customers, ... TO DO (To be filled)
 
     Preconditions:
         TODO: Fill this in
     """
-    all_vertices = data_collector(datafile)
+    score = 0
+    mcd_1 = ''
+    mcd_2 = ''
+    for v in graph.vertices:
+        if isinstance(graph.vertices[v], int):
+            for vertex in graph.vertices[v]:
+                vertex_vertex = graph.vertices[v][vertex]
+                if vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'QueenSpadina':
+                    mcd_1 = vertex
+                elif vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'AGO':
+                    mcd_2 = vertex
+    for point in graph.vertices:
+        # path1 =
 
 
-def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
-    """
-    Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
-    customer's location. Uses the weighed edges to calculate the path with the highest score.
 
-    Preconditions:
-     -
-    """
-    score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
-    score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
 
-def best_score_to_franchise(vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
-    """Calculate the best score between any two points on the graph based on the weighted edges.
-    """
 
 
 
@@ -102,22 +102,21 @@ def visualize_square_graph():
     """
 
 
-def edge_data(edge_file: str) -> list[dict]:
-    """Return the data corresponding to every road in the region."""
+def edge_data(vertex1: str | int, vertex2: str | int, edge_file: str) -> dict:
+    """Return the data corresponding to the edge between vertex1 and vertex2."""
 
     with open(edge_file, 'r') as roads:
         reader = csv.reader(roads)
-        lst = []
         mapping = {}
         for row in reader:
-            mapping['vertex1'] = row[0]
-            mapping['vertex2'] = row[1]
-            mapping['distance'] = row[2]
-            mapping['safety'] = row[3]
-            mapping['road hierarchy'] = row[4]
-            mapping['speed limit'] = row[5]
-            lst.append(mapping)
-    return lst
+            if row[0] == vertex1 and row[1] == vertex2:
+                mapping['vertex1'] = row[0]
+                mapping['vertex2'] = row[1]
+                mapping['distance'] = row[2]
+                mapping['safety'] = row[3]
+                mapping['road hierarchy'] = row[4]
+                mapping['speed limit'] = row[5]
+    return mapping
 
 
 
