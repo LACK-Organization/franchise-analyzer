@@ -211,3 +211,79 @@ class Graph:
             return {neighbour.item for neighbour in v.neighbours}
         else:
             raise ValueError
+
+    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[Vertex]):
+        """Calculate the best score between any two points on the graph based on the weighted edges.
+        """
+        score = 0
+
+        v = self._vertices[vertex1]
+        for neighbour in v.neighbours:
+            if neighbour not in visited:
+
+
+class DataEngine:
+    """DataEngine generates a WeightedGraph based on the vertex and edge data we have.
+    """
+
+    graph_map: WeightedGraph
+
+    def __init__(self, vertex_data: TextIO, edge_data: TextIO) -> None:
+        """Initialize a new WeightedGraph representation of the region in between two franchises
+        based on data collected.
+
+        vertex_data: name of text file containing information about every vertex.
+        edge_data: name of text file containing information about every weighted edge.
+        """
+        self.graph_map = self.load_graph(vertex_data, edge_data)
+
+    def load_graph(self, vertex_data: TextIO, edge_data: TextIO) -> WeightedGraph:
+        """Returns a loaded WeightedGraph representation of the region in between two franchises.
+        TODO: finish this method and fix graph type: Type[WeightedGraph]
+        """
+        graph = WeightedGraph()
+        self.load_vertex_data(graph, vertex_data)
+        self.load_edge_data(graph, edge_data)
+        return graph
+
+    def load_vertex_data(self, graph_map: WeightedGraph, data_file: TextIO) -> None:
+        """Populates the given WeightedGraph with the vertices retrieved from the given vertex data file.
+
+        data_file is a text file containing the following information about each vertex (in the following order):
+         1. Vertex type (whether it is a Franchise, a TTC stop, a Landmark, a Intersection, or Another Restaurant;
+         2. Vertex cluster (an integer representing the group in which the vertex is inserted in, and if it's 0 then
+            it's not part of a cluster);
+         3. Vertex name (i.e. the <item>);
+         4. Vertex data (i.e. number representation of the factors that describe that vertex).
+
+        TODO: finish this method
+        """
+        for row in data_file:
+            graph_map.add_vertex()
+            graph_map.add_edge()
+            if str(row[0]) == 'MCD':
+                name_list = ['Type', 'Cluster', 'Name', 'Vehicular Traffic', 'Pedestrian Traffic',
+                             'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through', 'Wifi']
+                for i in range(len(name_list)):
+                    self[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'OtherRestaurant':
+                name_list = ['Type', 'Cluster', 'Name', 'Reviews', 'Client Similarity']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'Landmark':
+                name_list = ['Type', 'Cluster', 'Name', 'Significance']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'Intersection':
+                name_list = ['Type', 'Cluster', 'Name', 'Bike Per Car Ratio', 'Vehicular Traffic',
+                             'Pedestrian Traffic Traffic']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            else:
+                name_list = ['Type', 'Cluster', 'Name', 'Google Reviews']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+
+    def load_edge_data(self, graph_map: WeightedGraph, data_file: TextIO) -> None:
+        """Generates edges... TODO: finish this method
+        """
