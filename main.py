@@ -4,7 +4,7 @@ TODO: Finish file dosctring
 """
 from __future__ import annotations
 import csv
-from typing import Any, Union
+from typing import Any, Union, TextIO
 
 
 
@@ -20,10 +20,10 @@ def get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
         return weight
 
 
-class _Vertex:
+class _WeightedVertex:
     """A vertex in a graph.
 
-    Instance Attributes:
+    Instance Attributes: TODO: update docstring
         - item: The name of this vertex.
         - vertex_data: The data stored within this vertex.
         - neighbours: The vertices that are adjacent to this vertex.
@@ -36,10 +36,10 @@ class _Vertex:
     """
     item: str
     vertex_data = dict
-    neighbours: dict[_Vertex, Union[int, float]]
+    neighbours: dict[_WeightedVertex, Union[int, float]]
     cluster: int
 
-    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_Vertex, Union[int, float]], cluster: int) -> None:
+    def __init__(self, item: str, vertex_data: dict, neighbours: dict[_WeightedVertex, Union[int, float]], cluster: int) -> None:
         """Initialize a new vertex with the given item and neighbours."""
         self.item = item
         self.vertex_data = vertex_data
@@ -47,20 +47,20 @@ class _Vertex:
         self.cluster = cluster
 
 
-class Graph:
+class WeightedGraph:
     """A graph.
 
     Representation Invariants:
         - all(item == self._vertices[item].item for item in self._vertices)
         - all(is_instance(self._vertices[item], list) for item in self._vertices if is_instance(item, int))
-        - all(is_instance(self._vertices[item], _Vertex) for item in self._vertices if is_instance(item, str))
+        - all(is_instance(self._vertices[item], _WeightedVertex) for item in self._vertices if is_instance(item, str))
 
     Private Instance Attributes:
         - _vertices:
             A collection of the vertices contained in this graph.
-            Maps item to _Vertex object or to a list of Vertex objects if the key represents a cluster.
+            Maps item to _WeightedVertex object or to a list of Vertex objects if the key represents a cluster.
     """
-    _vertices: dict[str | int, _Vertex | dict[str, _Vertex]]
+    _vertices: dict[str | int, _WeightedVertex | dict[str, _WeightedVertex]]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
@@ -73,12 +73,12 @@ class Graph:
         """
         if cluster == 0:
             if item not in self._vertices:
-                self._vertices[item] = _Vertex(item, vertex_data, {}, cluster)
+                self._vertices[item] = _WeightedVertex(item, vertex_data, {}, cluster)
         else:
             if cluster not in self._vertices:
-                self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
+                self._vertices[cluster] = {item: _WeightedVertex(item, vertex_data, {}, cluster)}
             else:
-                self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
+                self._vertices[cluster][item] = _WeightedVertex(item, vertex_data, {}, cluster)
                 # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
@@ -122,7 +122,7 @@ class Graph:
             # We didn't find an existing vertex for both items.
             return False
 
-    def best_score(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[Vertex]):
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
         score = 0
@@ -133,37 +133,67 @@ class Graph:
 
 
 class DataEngine:
-    """DataEngine generates a Graph based on the vertex and edge data we have.
+    """DataEngine generates a WeightedGraph based on the vertex and edge data we have.
     """
-    def __init__(self) -> None:
 
-    def load_vertex_data(self, datafile: str, name: str, type: str) -> dict:
-        """Return the data associtated with the vertex."""
-        with open(datafile, 'r') as file1:
-            reader = csv.reader(file1)
-            data_mapping = {}
-            for row in reader:
-                if str(row[2]) == name and row[0] == type:
-                    if str(row[0]) == 'MCD':
-                        name_list = ['Type', 'Cluster', 'Name', 'Vehicular Traffic', 'Pedestrian Traffic',
-                                     'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through', 'Wifi']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'OtherRestaurant':
-                        name_list = ['Type', 'Cluster', 'Name', 'Reviews', 'Client Similarity']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'Landmark':
-                        name_list = ['Type', 'Cluster', 'Name', 'Significance']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'Intersection':
-                        name_list = ['Type', 'Cluster', 'Name', 'Bike Per Car Ratio', 'Vehicular Traffic',
-                                     'Pedestrian Traffic Traffic']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    else:
-                        name_list = ['Type', 'Cluster', 'Name', 'Google Reviews']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-        return data_mapping
+    graph_map: WeightedGraph
+
+    def __init__(self, vertex_data: TextIO, edge_data: TextIO) -> None:
+        """Initialize a new WeightedGraph representation of the region in between two franchises
+        based on data collected.
+
+        vertex_data: name of text file containing information about every vertex.
+        edge_data: name of text file containing information about every weighted edge.
+        """
+        self.graph_map = self.load_graph(vertex_data, edge_data)
+
+    def load_graph(self, vertex_data: TextIO, edge_data: TextIO) -> WeightedGraph:
+        """Returns a loaded WeightedGraph representation of the region in between two franchises.
+        TODO: finish this method and fix graph type: Type[WeightedGraph]
+        """
+        graph = WeightedGraph()
+        self.load_vertex_data(graph, vertex_data)
+        self.load_edge_data(graph, edge_data)
+        return graph
+
+    def load_vertex_data(self, graph_map: WeightedGraph, data_file: TextIO) -> None:
+        """Populates the given WeightedGraph with the vertices retrieved from the given vertex data file.
+
+        data_file is a text file containing the following information about each vertex (in the following order):
+         1. Vertex type (whether it is a Franchise, a TTC stop, a Landmark, a Intersection, or Another Restaurant;
+         2. Vertex cluster (an integer representing the group in which the vertex is inserted in, and if it's 0 then
+            it's not part of a cluster);
+         3. Vertex name (i.e. the <item>);
+         4. Vertex data (i.e. number representation of the factors that describe that vertex).
+
+        TODO: finish this method
+        """
+        for row in data_file:
+            graph_map.add_vertex()
+            graph_map.add_edge()
+            if str(row[0]) == 'MCD':
+                name_list = ['Type', 'Cluster', 'Name', 'Vehicular Traffic', 'Pedestrian Traffic',
+                             'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through', 'Wifi']
+                for i in range(len(name_list)):
+                    self[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'OtherRestaurant':
+                name_list = ['Type', 'Cluster', 'Name', 'Reviews', 'Client Similarity']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'Landmark':
+                name_list = ['Type', 'Cluster', 'Name', 'Significance']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            elif str(row[0]) == 'Intersection':
+                name_list = ['Type', 'Cluster', 'Name', 'Bike Per Car Ratio', 'Vehicular Traffic',
+                             'Pedestrian Traffic Traffic']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+            else:
+                name_list = ['Type', 'Cluster', 'Name', 'Google Reviews']
+                for i in range(len(name_list)):
+                    data_mapping[name_list[i]] = str(row[i])
+
+    def load_edge_data(self, graph_map: WeightedGraph, data_file: TextIO) -> None:
+        """Generates edges... TODO: finish this method
+        """
