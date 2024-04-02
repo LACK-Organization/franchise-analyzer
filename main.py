@@ -6,17 +6,60 @@ from __future__ import annotations
 import csv
 from typing import Any, Union
 
+def data_collector(datafile: str, name: str, type: str) -> dict:
+    """Return the data associtated with the vertex."""
+    with open(datafile, 'r') as file1:
+        reader = csv.reader(file1)
+        data_mapping = {}
+        for row in reader:
+            if str(row[2]) == name and row[0] == type:
+                if str(row[0]) == 'MCD':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Vehicular Traffic'] = int(row[3])
+                    data_mapping['Pedestrian Traffic'] = int(row[4])
+                    data_mapping['Bike Traffic'] = int(row[5])
+                    data_mapping['Reviews'] = int(row[6])
+                    data_mapping['Operating Hours'] = int(row[7])
+                    data_mapping['Drive Through'] = int(row[8])
+                    data_mapping['Wifi'] = int(row[9])
+                elif str(row[0]) == 'OtherRestaurant':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Reviews'] = int(row[3])
+                    data_mapping['Client Similarity'] = int(row[4])
+                elif str(row[0]) == 'Landmark':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Significance'] = int(row[3])
+                elif str(row[0]) == 'Intersection':
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Bike Per Car Ratio'] = str(row[3])
+                    data_mapping['Vehicular Traffic'] = str(row[4])
+                    data_mapping['Pedestrian Traffic Traffic'] = str(row[5])
+                else:
+                    data_mapping['Type'] = str(row[0])
+                    data_mapping['Cluster'] = int(row[1])
+                    data_mapping['Name'] = str(row[2])
+                    data_mapping['Google Reviews'] = int(row[3])
+    return data_mapping
 
 
 
 
-def _get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
+
+def get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
     with open(edge_data, 'r') as file:
         reader = csv.reader(file)
         weight = 0
         for row in reader:
             if (str(row[0]) == vertex1 or str(row[0]) == vertex2) and (str(row[1]) == vertex1 or str(row[1]) == vertex2):
-                weight = 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
+                weight += 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
         return weight
 
 
@@ -79,8 +122,7 @@ class Graph:
                 self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
             else:
                 self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
-                for neighbour in self._vertices[cluster]:
-                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
 
@@ -123,40 +165,24 @@ class Graph:
             # We didn't find an existing vertex for both items.
             return False
 
+    def get_neighbours(self, item: Any) -> set:
+        """Return a set of the neighbours of the given item.
 
-class DataEngine:
-    """DataEngine generates a Graph based on the vertex and edge data we have.
-    """
+        Note that the *items* are returned, not the _Vertex objects themselves.
 
-    def __init__(self) -> None:
+        Raise a ValueError if item does not appear as a vertex in this graph.
+        """
+        if item in self._vertices:
+            v = self._vertices[item]
+            return {neighbour.item for neighbour in v.neighbours}
+        else:
+            raise ValueError
 
-    def load_vertex_data(self, datafile: str, name: str, type: str) -> dict:
-        """Return the data associtated with the vertex."""
-        with open(datafile, 'r') as file1:
-            reader = csv.reader(file1)
-            data_mapping = {}
-            for row in reader:
-                if str(row[2]) == name and row[0] == type:
-                    if str(row[0]) == 'MCD':
-                        name_list = ['Type', 'Cluster', 'Name', 'Vehicular Traffic', 'Pedestrian Traffic',
-                                     'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through', 'Wifi']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'OtherRestaurant':
-                        name_list = ['Type', 'Cluster', 'Name', 'Reviews', 'Client Similarity']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'Landmark':
-                        name_list = ['Type', 'Cluster', 'Name', 'Significance']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    elif str(row[0]) == 'Intersection':
-                        name_list = ['Type', 'Cluster', 'Name', 'Bike Per Car Ratio', 'Vehicular Traffic',
-                                     'Pedestrian Traffic Traffic']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-                    else:
-                        name_list = ['Type', 'Cluster', 'Name', 'Google Reviews']
-                        for i in range(len(name_list)):
-                            data_mapping[name_list[i]] = str(row[i])
-        return data_mapping
+    def best_score(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+        """Calculate the best score between any two points on the graph based on the weighted edges.
+        """
+        score = 0
+
+        v = self._vertices[vertex1]
+        for neighbour in v.neighbours:
+            if neighbour not in visited:
