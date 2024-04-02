@@ -53,7 +53,7 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
 
 
 
-def _get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
+def get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
     with open(edge_data, 'r') as file:
         reader = csv.reader(file)
         weight = 0
