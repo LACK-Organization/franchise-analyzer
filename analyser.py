@@ -1,27 +1,18 @@
+"""
+Title
+"""
+from main import *
 import csv
+
+
+
 
 """File that runs the main program
 TODO: Finish file dosctring"""
 
 
 
-
-
-def get_franchise_locations(location1: str, location2: str) -> None:
-    """
-    Gets user's input (i.e. Franchise location).
-
-    This function will take the user's input, which will consist of the locations of the franchises they wish to analyze
-    and compare. The function will find the franchises from the dataset using these locations.
-
-    Preconditions:
-        - input != ''
-        - all(i.isalnum() or i == '-' for i in input)
-        - input is a valid franchise location
-    """
-
-
-def calculate_score(location1_data: dict, location2_data: dict) -> tuple[float]:
+def calculate_score(location1_data: dict, location2_data: dict, graph: Graph) -> tuple[float]:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -34,6 +25,24 @@ def calculate_score(location1_data: dict, location2_data: dict) -> tuple[float]:
     Preconditions:
         TODO: Fill this in
     """
+    all_vertices = data_collector(datafile)
+
+
+def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
+    """
+    Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+    customer's location. Uses the weighed edges to calculate the path with the highest score.
+
+    Preconditions:
+     -
+    """
+    score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
+    score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
+
+def best_score_to_franchise(vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+    """Calculate the best score between any two points on the graph based on the weighted edges.
+    """
+
 
 
 def visualize_map():
