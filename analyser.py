@@ -49,12 +49,23 @@ def visualize_square_graph():
     """
 
 
-def edge_data(edge_file: str) -> dict:
+def edge_data(edge_file: str) -> list[dict]:
     """Return the data corresponding to every road in the region."""
 
     with open(edge_file, 'r') as roads:
         reader = csv.reader(roads)
+        lst = []
+        mapping = {}
         for row in reader:
+            mapping['vertex1'] = row[0]
+            mapping['vertex2'] = row[1]
+            mapping['distance'] = row[2]
+            mapping['safety'] = row[3]
+            mapping['road hierarchy'] = row[4]
+            mapping['speed limit'] = row[5]
+            lst.append(mapping)
+    return lst
+
 
 
 

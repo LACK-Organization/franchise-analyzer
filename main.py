@@ -122,8 +122,7 @@ class Graph:
                 self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
             else:
                 self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
-                for neighbour in self._vertices[cluster]:
-                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
 
