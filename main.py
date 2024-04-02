@@ -179,11 +179,24 @@ class Graph:
         else:
             raise ValueError
 
-    def best_score(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+    def best_score_to_franchise(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
         score = 0
 
         v = self._vertices[vertex1]
+        visited.add(self)
         for neighbour in v.neighbours:
             if neighbour not in visited:
+
+
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
+        """
+        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+        customer's location. Uses the weighed edges to calculate the path with the highest score.
+
+        Preconditions:
+         -
+        """
+        score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
+        score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
