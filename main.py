@@ -53,13 +53,13 @@ def data_collector(datafile: str, name: str, type: str) -> dict:
 
 
 
-def _get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
+def get_weight(vertex1: str, vertex2: str, edge_data: str) -> float:
     with open(edge_data, 'r') as file:
         reader = csv.reader(file)
         weight = 0
         for row in reader:
             if (str(row[0]) == vertex1 or str(row[0]) == vertex2) and (str(row[1]) == vertex1 or str(row[1]) == vertex2):
-                weight = 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
+                weight += 0.45 * float(row[3]) + 0.35 * float(row[4]) + 0.2 * float(row[5])
         return weight
 
 
@@ -122,8 +122,7 @@ class Graph:
                 self._vertices[cluster] = {item: _Vertex(item, vertex_data, {}, cluster)}
             else:
                 self._vertices[cluster][item] = _Vertex(item, vertex_data, {}, cluster)
-                for neighbour in self._vertices[cluster]:
-                    self.add_edge(neighbour, item) # TODO: If time permits, make a helper to connect the vertices in a
+                # TODO: If time permits, make a helper to connect the vertices in a
                                                    # cycle.
 
 
