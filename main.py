@@ -178,3 +178,12 @@ class Graph:
             return {neighbour.item for neighbour in v.neighbours}
         else:
             raise ValueError
+
+    def best_score(self, vertex1: str, vertex2: str, graph: Graph, visited: set[Vertex]):
+        """Calculate the best score between any two points on the graph based on the weighted edges.
+        """
+        score = 0
+
+        v = self._vertices[vertex1]
+        for neighbour in v.neighbours:
+            if neighbour not in visited:
