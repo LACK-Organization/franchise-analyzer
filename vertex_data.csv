@@ -1,38 +1,29 @@
-MCD,QueenSpadina,ClusterVal,traffic around restaurant,pedestrian traffic, bike traffic,reviews,operating hours,drive thru,wifi
-MCD,AGO,ClusterVal,traffic around restaurant,reviews,crime rate,operating hours,drive thru,wifi
-Landmark,ClusterVal,Name,Significance
-Landmark,ClusterVal,AGO,ClusterVal,traffic arround landmark
-TTC,ClusterVal,Name,traffic,Reliableness
-TTC,ClusterVal,Name,GoogleReviews(REVIEWxREVNUM)
-Intersection,ClusterVal,Bike per car ratio,Vehicle Traffic Volume,Pedestrian Traffic Volume
-OtherRestaurant,ClusterVal,Name,reviews,Client Similarity
-
-MCD,4,QueenSpadina,27455,33667,2359,3.5,24,0,1
-MCD,13,AGO,16441,12216,830,3.4,13,0,0
-OtherRestaurant,3,Banh Mi Boys,4.5,1
-OtherRestaurant,3,Popeyes,3.9,3
-OtherRestaurant,3,Kinton Ramen,4.4,1
-OtherRestaurant,2,Midori Ramen,4.4,1
-OtherRestaurant,2,Shelbys Shwarma,4.7,2
-OtherRestaurant,1,Raku,4.4,1
-OtherRestaurant,0,Juicy Dumpling,4.5,2
-OtherRestaurant,4,A&W,3.8,3
-OtherRestaurant,0,Chick-fil-A,4.4,3
-Landmark,14,AGO,2
-Landmark,14,Grange Park,4
-Landmark,14,OCAD,4.5
-Landmark,4,Graffiti Alley,4.5
-Intersection,4,QueenSpadina,0.09,27455,33667
-Intersection,13,DundasMcCaul,0.05,16441,12216
-TTC,11,Osgoode,5418
-TTC,12,StPatricks,3362
-TTC,5,DundasSpadinaSTC,528
-TTC,4,QueenSpadinaSTC,771
-TTC,6,DundasHuronSTC,50
-TTC,14,DundasBeverleySTC,81
-TTC,14,DundasMcCaulSTC,100
-TTC,13,DundasStPatrickSTC,150
-TTC,9,QueenMcCaulSTC,50
-TTC,8,QueenJohnSTC,350
-TTC,10,StephanieMcCaulSTC,0
-TTC,7,QueenSohoSTC,0
+MCD,4,QueenSpadina,27455,33667,2359,3.5,24,0,1,-79.396705,43.648677
+MCD,13,AGO,16441,12216,830,3.4,13,0,0,-79.391204,43.653729
+OtherRestaurant,3,Banh Mi Boys,4.5,1,-79.396882,43.648641
+OtherRestaurant,3,Popeyes,3.9,3,-79.397095,43.648607
+OtherRestaurant,3,Kinton Ramen,4.4,1,-79.397173,43.648598
+OtherRestaurant,2,Midori Ramen,4.4,1,-79.397690,43.648488
+OtherRestaurant,2,Shelbys Shwarma,4.7,2,-79.397829,43.648453
+OtherRestaurant,1,Raku,4.4,1,-79.399405,43.648120
+OtherRestaurant,0,Juicy Dumpling,4.5,2,-79.398778,43.652762
+OtherRestaurant,4,A&W,3.8,3,-79.396057,43.648825
+OtherRestaurant,0,Chick-fil-A,4.4,3,-79.394982,43.649056
+Landmark,14,AGO,2,-79.39248372345622,43.65366033465043
+Landmark,14,Grange Park,4,-79.392202,43.652594
+Landmark,14,OCAD,4.5,-79.39148174499432,43.65321279197304
+Landmark,4,Graffiti Alley,4.5,-79.39846666830827,43.64794326824828
+Intersection,4,QueenSpadina,0.09,27455,33667,-79.396376,43.648757
+Intersection,13,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
+TTC,11,Osgoode,5418,-79.386773,43.650629
+TTC,12,StPatricks,3362,-79.3883416423785,43.65485469249883
+TTC,5,DundasSpadinaSTC,528,-79.39807145787172,43.65293758903966
+TTC,4,QueenSpadinaSTC,771,-79.39638502482622,43.64878360585168
+TTC,6,DundasHuronSTC,50,-79.396026,43.653366
+TTC,14,DundasBeverleySTC,81,-79.393819,43.653816
+TTC,14,DundasMcCaulSTC,100,-79.391583,43.654288
+TTC,13,DundasStPatrickSTC,150,-79.390116,43.654499
+TTC,9,QueenMcCaulSTC,50,-79.38983213529512,43.650337201820314
+TTC,8,QueenJohnSTC,350,-79.39116602725417,43.64976369284425
+TTC,10,StephanieMcCaulSTC,0,-79.390151,43.651259
+TTC,7,QueenSohoSTC,0,-79.393180,43.649425
