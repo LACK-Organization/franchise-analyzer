@@ -91,8 +91,8 @@ class _WeightedVertex:
         Preconditions:
          -
         """
-        score_franchise1 = best_weighted_path(vertex, franchise1)
-        score_franchise2 = best_weighted_path(vertex, franchise2)
+        score_franchise1 = self.best_weighted_path(vertex, franchise1)
+        score_franchise2 = self.best_weighted_path(vertex, franchise2)
 
 
 class WeightedGraph:
