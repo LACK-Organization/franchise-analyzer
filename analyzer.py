@@ -1,5 +1,12 @@
-"""
-Title
+"""CSC111 Project 2: LACK's Franchise Analyzer
+
+This module contains the calculate score function, main program loop, and the visualization functions for
+Franchise Analyzer.
+
+Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (LACK)
+TODO: Finish file dosctring!
+TODO: Add RI and IA to every class (update if needed)!
+TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 from main import *
 import csv
