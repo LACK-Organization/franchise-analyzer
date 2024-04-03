@@ -58,32 +58,23 @@ def visualize_square_graph():
     """
 
 
-def edge_data(vertex1: str | int, vertex2: str | int, edge_file: str) -> dict:
-    """Return the data corresponding to the edge between vertex1 and vertex2."""
-
-    with open(edge_file, 'r') as roads:
-        reader = csv.reader(roads)
-        mapping = {}
-        for row in reader:
-            if row[0] == vertex1 and row[1] == vertex2:
-                mapping['vertex1'] = row[0]
-                mapping['vertex2'] = row[1]
-                mapping['distance'] = row[2]
-                mapping['safety'] = row[3]
-                mapping['road hierarchy'] = row[4]
-                mapping['speed limit'] = row[5]
-    return mapping
-
-
-
-
+factor_weights = [0.45, 0.3, 0.2]  # TODO: Check weights
+generator = GraphGenerator('vertex_data.csv', 'edge_data.csv', factor_weights)
+scaled_graph = generator.scaled_graph
+normal_graph = generator.normal_graph
 
 # Main program loop
-
 state = True
-print("What are the locations of the franchises you want to analyse?\n")
-location1 = input("Write the name of the first location: ").strip()
-location2 = input("\nWrite the name of the second location: ").strip()
-get_franchise_locations(location1, location2)
+menu = ['sg', 'ng', 'exit', '.']
+print("Initializing analyzer...\n")
 
-# while not state:
+while state:
+    user_input = input("Type a command: ")
+    if user_input == 'exit':
+        state = False
+    elif user_input == 'sg':
+        visualize_map()  # TODO: implement
+    elif user_input == 'ng':
+        visualize_square_graph()  # TODO: implement
+    else:
+        user_input = input("Enter a valid command: ")
