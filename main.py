@@ -47,33 +47,43 @@ class _WeightedVertex:
         self.coordinates = coordinates
         self.vertex_type: vertex_type
 
-    def best_weighted_score(self, vertex2: str, visited: set[_WeightedVertex]) -> float:
+    def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex]) -> list:
         """Calculate the best weighted score between any two points on the graph based on the weighted edges.
         We calculate the full weight of each edge as distance * (1 - weight). Then to find the weighted score between
         two vertices, we find the least sum of all edges between the two vertices.
 
+        NEW IMPLEMENTATION: Returns a list of two elements: the score, and a list of the vertices in the chosen path.
+
         Preconditions:
+         - vertex1 != vertex2
          - vertex1 is in graph
          - vertex2 is in graph
-         - graph is connected
+         - WeightedGraph is connected
         """
         score = 0
         visited.add(self)
-        for neighbour in self.neighbours:
-            if neighbour not in visited:
-                score += self.neighbours[neighbour][0] * (1 - self.neighbours[neighbour][1])
-                if neighbour == vertex2:
-                    return score
-                else:
-                    s = set()
-                    for n in neighbour.neighbours:
-                        set.add(n.best_weighted_score(vertex2, visited))
+        path = [self]
+        all_neighbours = {}
+        if self == vertex2:
+            return [score, path]
+        else:
+            for neighbour in self.neighbours:
+                if neighbour not in visited:
+                    score += self.neighbours[neighbour][0] * (1 - self.neighbours[neighbour][1])
+                    best_score = neighbour.best_weighted_path(vertex2, visited)
+                    score += best_score[0]
+                    path += best_score[1]
+                    all_neighbours[score] = path
 
-                    shortest_path_score = min(s)
-                    return score + shortest_path_score
+            if all_neighbours == {}:
+                return [score, path]
+            else:
+                min_path_score = min(all_neighbours)
+                path = all_neighbours[min(all_neighbours)]
 
+                return [min_path_score, path]
 
-    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[_WeightedVertex]):
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str):
         """
         Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
         customer's location. Uses the weighed edges to calculate the path with the highest score.
@@ -81,9 +91,8 @@ class _WeightedVertex:
         Preconditions:
          -
         """
-        score_franchise1 = best_weighted_score(vertex, franchise1, graph, visite)
-        score_franchise2 = best_weighted_score(vertex, franchise2, graph)
-
+        score_franchise1 = best_weighted_path(vertex, franchise1)
+        score_franchise2 = best_weighted_path(vertex, franchise2)
 
 
 class WeightedGraph:
@@ -247,16 +256,6 @@ class WeightedGraph:
         else:
             # We didn't find an existing vertex for both items.
             return False
-
-
-    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[_WeightedVertex]):
-        """Calculate the best score between any two points on the graph based on the weighted edges.
-        """
-        score = 0
-
-        v = self.vertices[vertex1]
-        for neighbour in v.neighbours:
-            if neighbour not in visited:
 
 
 class GraphGenerator:
