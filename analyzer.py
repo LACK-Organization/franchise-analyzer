@@ -55,7 +55,7 @@ def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> floa
 
 
 
-def visualize_map(final_data: dict):
+def visualize_map(final_data: dict, edge_data: set):
     """
     Creates a map visualization of the region we're considering, i.e., where the Franchises, Transit points and the
     Landmarks are located.
@@ -66,11 +66,7 @@ def visualize_map(final_data: dict):
             final_data[vertex].vertex_data['cluster']}
 
     # Connections (lines) between vertices
-    connections = [
-        ('Vertex 1', 'Vertex 2'),  # Vertex 1 to Vertex 2
-        ('Vertex 1', 'Vertex 4'),  # Vertex 1 to Vertex 4
-        ('Vertex 3', 'Vertex 2'),  # Vertex 3 to Vertex 2
-    ]
+    connections = edge_data
 
     fig = go.Figure()
 
