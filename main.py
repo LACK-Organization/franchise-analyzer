@@ -95,8 +95,10 @@ class _WeightedVertex:
         self.coordinates = coordinates
         self.vertex_type: vertex_type
 
-    def best_score_to_franchise(self, vertex2: str, visited: set[_Vertex]):
-        """Calculate the best score between any two points on the graph based on the weighted edges.
+    def best_weighted_score(self, vertex2: str, visited: set[_WeightedVertex]) -> float:
+        """Calculate the best weighted score between any two points on the graph based on the weighted edges.
+        We calculate the full weight of each edge as distance * (1 - weight). Then to find the weighted score between
+        two vertices, we find the least sum of all edges between the two vertices.
 
         Preconditions:
          - vertex1 is in graph
@@ -107,17 +109,19 @@ class _WeightedVertex:
         visited.add(self)
         for neighbour in self.neighbours:
             if neighbour not in visited:
+                score += self.neighbours[neighbour][0] * (1 - self.neighbours[neighbour][1])
                 if neighbour == vertex2:
-                    return self.neighbours[neighbour]
+                    return score
                 else:
-                    score += self.neighbours[neighbour]
-                    dict = {}
+                    s = set()
                     for n in neighbour.neighbours:
-                        dict[n] = n.best_score_to_franchise(vertex2, visited)
-                        # TODO: Finish recursive case and figure out edge weights
-                        neighbour.best_score_to_franchise(vertex2, visited)
+                        set.add(n.best_weighted_score(vertex2, visited))
 
-    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[Vertex]):
+                    shortest_path_score = min(s)
+                    return score + shortest_path_score
+
+
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[_WeightedVertex]):
         """
         Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
         customer's location. Uses the weighed edges to calculate the path with the highest score.
@@ -125,8 +129,8 @@ class _WeightedVertex:
         Preconditions:
          -
         """
-        score_franchise1 = best_score_to_franchise(vertex, franchise1, graph, visite)
-        score_franchise2 = best_score_to_franchise(vertex, franchise2, graph)
+        score_franchise1 = best_weighted_score(vertex, franchise1, graph, visite)
+        score_franchise2 = best_weighted_score(vertex, franchise2, graph)
 
 
 
