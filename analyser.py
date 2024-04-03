@@ -48,48 +48,84 @@ def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> floa
 
 
 
-def visualize_map():
+def visualize_map(final_data: dict):
     """
     Creates a map visualization of the region we're considering, i.e., where the Franchises, Transit points and the
     Landmarks are located.
     """
-    lon = [30, 30, 40, 30]
-    lat = [20, 30, 20, 40]
-    text = ['Vertex 1', 'Vertex 2', 'Vertex 3', 'Vertex 4']
+    vertices = {}
+    for vertex in final_data:
+        vertices[vertex.item] = {'coordinates': final_data[vertex].vertex_data['coordinates'], 'cluster':
+            final_data[vertex].vertex_data['cluster']}
 
+    # Connections (lines) between vertices
     connections = [
-        {'start': 0, 'end': 1},
-        {'start': 0, 'end': 2},
-        {'start': 2, 'end': 1},
-        {'start': 2, 'end': 3}
+        ('Vertex 1', 'Vertex 2'),  # Vertex 1 to Vertex 2
+        ('Vertex 1', 'Vertex 4'),  # Vertex 1 to Vertex 4
+        ('Vertex 3', 'Vertex 2'),  # Vertex 3 to Vertex 2
     ]
 
     fig = go.Figure()
 
+    # Add lines for each connection
     for conn in connections:
+        start_vertex, end_vertex = conn
         fig.add_trace(go.Scattermapbox(
             mode="lines",
-            lon=[lon[conn['start']], lon[conn['end']]],
-            lat=[lat[conn['start']], lat[conn['end']]],
-            marker={'size': 10},
+            lon=[vertices[start_vertex]['coordinates'][0], vertices[end_vertex]['coordinates'][0]],
+            lat=[vertices[start_vertex]['coordinates'][1], vertices[end_vertex]['coordinates'][1]],
+            line=dict(width=2, color='black'),  # Customize line color here
         ))
 
-    fig.add_trace(go.Scattermapbox(
-        mode="markers+text",
-        lon=lon,
-        lat=lat,
-        marker={'size': 10},
-        text=text,
-        textposition="top center"
-    ))
+    # Add markers for the vertices
+    for vertex, details in vertices.items():
+        if details['cluster'] == 0:
+            c = 'light blue'
+        elif details['cluster'] == 1:
+            c = 'salmon'
+        elif details['cluster'] == 2:
+            c = 'green'
+        elif details['cluster'] == 3:
+            c = 'red'
+        elif details['cluster'] == 4:
+            c = 'sandybrown'
+        elif details['cluster'] == 5:
+            c = 'blue'
+        elif details['cluster'] == 6:
+            c = 'turquoise'
+        elif details['cluster'] == 7:
+            c = 'brown'
+        elif details['cluster'] == 8:
+            c = 'orange'
+        elif details['cluster'] == 9:
+            c = 'yellow'
+        elif details['cluster'] == 10:
+            c = 'coral'
+        elif details['cluster'] == 11:
+            c = 'purple'
+        elif details['cluster'] == 12:
+            c = 'palegoldenrod'
+        elif details['cluster'] == 13:
+            c = 'seashell'
+        elif details['cluster'] == 14:
+            c = 'olive'
+        fig.add_trace(go.Scattermapbox(
+            mode="markers+text",
+            lon=[details['coordinates'][0]],
+            lat=[details['coordinates'][1]],
+            marker={'size': 10, 'color': c},
+            name=vertex,
+            text=vertex,
+            textposition="top center"
+        ))
 
     fig.update_layout(
         mapbox={
             'style': "open-street-map",
-            'zoom': 5,
-            'center': {'lon': -79.393425, 'lat': 43.651707}  # Center of the map
+            'zoom': 5,  # Adjust the zoom level as needed
+            'center': {'lon': 35, 'lat': 25}  # Center of the map for better visualization
         },
-        showlegend=False,
+        showlegend=True,
         margin={'l': 0, 'r': 0, 'b': 0, 't': 0}
     )
 
