@@ -12,7 +12,7 @@ TODO: Finish file dosctring"""
 
 
 
-def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> float:
+def calculate_score(location1: str, data: DataEngine, datafile: str) -> tuple[float, float]:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -25,19 +25,57 @@ def calculate_score(location1: str, graph: WeightedGraph, datafile: str) -> floa
     Preconditions:
         TODO: Fill this in
     """
-    score = 0
+
     mcd_1 = ''
     mcd_2 = ''
+    graph = data.graph_map
     for v in graph.vertices:
         if isinstance(graph.vertices[v], int):
             for vertex in graph.vertices[v]:
                 vertex_vertex = graph.vertices[v][vertex]
                 if vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'QueenSpadina':
-                    mcd_1 = vertex
+                    mcd_1 = vertex_vertex
                 elif vertex_vertex.vertex_type == 'MCD' and vertex_vertex.item == 'AGO':
-                    mcd_2 = vertex
+                    mcd_2 = vertex_vertex
+    final_score1 = 0
+    final_score2 = 0
     for point in graph.vertices:
-        # path1 =
+        final_score1 += 1 / graph.best_weighted_score(point, mcd_1.item, {mcd_2})
+        final_score2 += 1 / graph.best_weighted_score(point, mcd_2.item, {mcd_1})
+    mcd_1_data = mcd_1.vertex_data
+    mcd_2_data = mcd_2.vertex_data
+    mcd_1_score = 0.175 * mcd_1_data['Vehicular Traffic'] + 0.125 * mcd_1_data['Pedestrian Traffic']\
+                  + 0.05 * mcd_1_data['Bike Traffic'] + 0.2 * mcd_1_data['Reviews']\
+                  + 0.1 * mcd_1_data['Operating Hours'] + 0.3 * mcd_1_data['Drive Through'] + 0.05 * mcd_1_data['Wifi']
+    mcd_2_score = 0.175 * mcd_2_data['Vehicular Traffic'] + 0.125 * mcd_2_data['Pedestrian Traffic']\
+                  + 0.05 * mcd_2_data['Bike Traffic'] + 0.2 * mcd_2_data['Reviews']\
+                  + 0.1 * mcd_2_data['Operating Hours'] + 0.3 * mcd_2_data['Drive Through'] + 0.05 * mcd_2_data['Wifi']
+    final_score1 += mcd_1_score
+    final_score2 += mcd_2_score
+    return (final_score1, final_score2)
+
+
+        point1_1, point2_1 = 0, 1
+        point1_2, point2_2 = 0, 1
+        # while point1_1 < len(path1) and point2_1 <= len(path1):
+        #     edge_score_1 += (1 - data.get_weight(path1[point1_1], path1[point2_1])) * get_distance(path1[point1_1],
+        #                                                                                            path1[point2_1])
+        #     point1_1 += 1
+        #     point2_1 += 1
+        # while point1_2 < len(path2) and point2_2 <= len(path2):
+        #     edge_score_2 += (1 - data.get_weight(path2[point1_2], path2[point2_2])) * get_distance(path2[point1_2],
+        #                                                                                            path2[point2_2])
+        #
+        #     point1_2 += 1
+        #     point2_2 += 1
+        # final_score1 += 1 / edge_score_1
+        # final_score2 += 1 / edge_score_2
+
+
+
+
+
+
 
 
 

@@ -62,7 +62,7 @@ class WeightedGraph:
         - all(is_instance(self._vertices[item], _WeightedVertex) for item in self._vertices if is_instance(item, str))
 
     Private Instance Attributes:
-        - _vertices:
+        - vertices:
             A collection of the vertices contained in this graph.
             Maps item to _WeightedVertex object or to a list of Vertex objects if the key represents a cluster.
     """
@@ -132,7 +132,7 @@ class WeightedGraph:
             # We didn't find an existing vertex for both items.
             return False
 
-    def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[_WeightedVertex]):
+    def best_score(self, vertex1: str, vertex2: str, visited: set[_WeightedVertex]) -> list[_WeightedVertex]:
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
         score = 0
