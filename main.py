@@ -126,7 +126,7 @@ class WeightedGraph:
                                                    # cycle.
 
 
-    def add_edge(self, item1: str | int, item2: str | int, distance: int, weight: float = 1.0) -> None:
+    def add_edge(self, item1: str, item2: str, distance: int, weight: float = 1.0) -> None:
         """Add an edge between the two vertices with the given items in this graph,
         with the given weight.
 
@@ -138,7 +138,7 @@ class WeightedGraph:
               or (distance == 0 and weight == 0)
             - (self.vertices[item1].cluster > 0 and self.vertices[item2].cluster > 0) == (distance == 0)
         """
-        if not (item1 in self.vertices and item2 in self.vertices):
+        if item1 not in self.vertices or item2 not in self.vertices:
             raise ValueError
         else:
             v1 = self.vertices[item1]
@@ -315,7 +315,7 @@ class GraphGenerator:
                 break
         return len_data_row
 
-    def load_graph(self, vertex_data: csv, edge_data: csv, factor_weights: list[float]) -> WeightedGraph:
+    def load_graph(self, vertex_data: str, edge_data: str, factor_weights: list[float]) -> WeightedGraph:
         """Returns a loaded WeightedGraph representation of the region in between two franchises.
         """
         graph = WeightedGraph()
@@ -323,7 +323,7 @@ class GraphGenerator:
         self.load_edge_data(graph, edge_data, factor_weights)
         return graph
 
-    def load_vertex_data(self, scaled_graph: WeightedGraph, vertex_data: csv) -> None:
+    def load_vertex_data(self, scaled_graph: WeightedGraph, vertex_data: str) -> None:
         """Populates the given WeightedGraph with the vertices retrieved from the given vertex data file.
 
         vertex_data is a csv file containing the following information about each vertex:
@@ -335,26 +335,28 @@ class GraphGenerator:
 
         TODO: Change function to work on every data_file based on headers
         """
-        for row in vertex_data:
-            data_names_list = []
-            if str(row[0]) == 'MCD':
-                data_names_list = ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews',
-                                  'Operating Hours', 'Drive Through', 'Wifi']
-            elif str(row[0]) == 'OtherRestaurant':
-                data_names_list = ['Reviews', 'Client Similarity']
-            elif str(row[0]) == 'Landmark':
-                data_names_list = ['Significance']
-            elif str(row[0]) == 'Intersection Main':
-                data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic']
-            elif str(row[0]) == 'Intersection Small':
-                scaled_graph.add_vertex(row[2], {}, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
-            elif str(row[0]) == 'Intersection':
-                data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic',
-                                  'Longitude', 'Latitude']
-            else:
-                data_names_list = ['Google Reviews']
-            data_dict = self._map_name_to_data(data_names_list, row)
-            scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
+        with open(vertex_data) as vertex_data:
+            vertex_data = csv.reader(vertex_data)
+            for row in vertex_data:
+                data_names_list = []
+                if str(row[0]) == 'MCD':
+                    data_names_list = ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews',
+                                       'Operating Hours', 'Drive Through', 'Wifi']
+                elif str(row[0]) == 'OtherRestaurant':
+                    data_names_list = ['Reviews', 'Client Similarity']
+                elif str(row[0]) == 'Landmark':
+                    data_names_list = ['Significance']
+                elif str(row[0]) == 'Intersection Main':
+                    data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic']
+                elif str(row[0]) == 'Intersection Small':
+                    scaled_graph.add_vertex(row[2], {}, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
+                elif str(row[0]) == 'Intersection':
+                    data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic',
+                                       'Longitude', 'Latitude']
+                else:
+                    data_names_list = ['Google Reviews']
+                data_dict = self._map_name_to_data(data_names_list, row)
+                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
 
     def _map_name_to_data(self, data_names: list[str], row: list) -> dict[str, Any]:
         """Helper function that returns a dictionary mapping each name from the given data_names list to its respective
@@ -365,11 +367,11 @@ class GraphGenerator:
             data_dict[data_names[i]] = str(row[i])
         return data_dict
 
-    def load_edge_data(self, scaled_graph: WeightedGraph, edge_data: csv, factor_weights: list[float]) -> None:
+    def load_edge_data(self, scaled_graph: WeightedGraph, edge_data: str, factor_weights: list[float]) -> None:
         """Generates edges for the given scaled_graph based on the information given in the edge_data csv file.
         This
 
-        edge_data is a csv file that contains the following data about each edge:
+        edge_data is a csv file that contains the following data about each edge;
          1. v1 and v2, v1 and a cluster, a cluster and v2, or a cluster and another cluster;
          2. The real life distance in meters between one vertex and the other;
          3. Other important information that describe that edge (i.e. a road).
@@ -379,56 +381,42 @@ class GraphGenerator:
 
         TODO: finish this docstring
         """
-        clusters_created = []
-        for row in edge_data:
-            distance = row[2]
-            weight = scaled_graph.calculate_edge_weight(row, factor_weights)
-            if (isinstance(row[0], int) and isinstance(row[1], int)) and (row[0] not in clusters_created
-                                                                            and row[1] not in clusters_created):
-                # Connecting clusters as cycles in graph:
-                cluster1 = scaled_graph.get_cluster(row[0])
-                cluster2 = scaled_graph.get_cluster(row[1])
-                scaled_graph.create_cluster(list(cluster1))
-                scaled_graph.create_cluster(list(cluster2))
-                clusters_created.append(row[0])
-                clusters_created.append(row[1])
-                # Adding edge between clusters:
-                item1_cluster1 = list(cluster1)[0]
-                item2_cluster2 = list(cluster2)[0]
-                scaled_graph.add_edge(item1_cluster1, item2_cluster2, distance, weight)
-            elif isinstance(row[0], str) and isinstance(row[1], int) and row[1] not in clusters_created:
-                # Connecting cluster as cycle in graph:
-                cluster = scaled_graph.get_cluster(row[1])
-                scaled_graph.create_cluster(list(cluster))
-                clusters_created.append(row[1])
-                # Adding edge between vertex and cluster:
-                item1_cluster = list(cluster)[0]
-                item2 = row[0]
-                scaled_graph.add_edge(item1_cluster, item2, distance, weight)
-            elif isinstance(row[0], int) and isinstance(row[1], str) and row[0] not in clusters_created:
-                # Connecting cluster as cycle in graph:
-                cluster = scaled_graph.get_cluster(row[0])
-                scaled_graph.create_cluster(list(cluster))
-                clusters_created.append(row[0])
-                # Adding edge between cluster and vertex:
-                item1 = row[1]
-                item2_cluster = list(cluster)[0]
-                scaled_graph.add_edge(item1, item2_cluster, distance, weight)
-            else:
-                scaled_graph.add_edge(row[0], row[1], distance, weight)
-
-    def _load_edge_data_helper(self, vertex1: str | int, vertex2: str | int, edge_file: str) -> dict:
-        """Return the data corresponding to the edge between vertex1 and vertex2."""
-        # TODO: Check if function is necessary
-        with open(edge_file, 'r') as roads:
-            reader = csv.reader(roads)
-            mapping = {}
-            for row in reader:
-                if row[0] == vertex1 and row[1] == vertex2:
-                    mapping['vertex1'] = row[0]
-                    mapping['vertex2'] = row[1]
-                    mapping['distance'] = row[2]
-                    mapping['safety'] = row[3]
-                    mapping['road hierarchy'] = row[4]
-                    mapping['speed limit'] = row[5]
-        return mapping
+        with open(edge_data) as edge_data:
+            edge_data = csv.reader(edge_data)
+            clusters_created = []
+            for row in edge_data:
+                distance = int(row[2])
+                weight = scaled_graph.calculate_edge_weight(row, factor_weights)
+                if (isinstance(row[0], int) and isinstance(row[1], int)) and (row[0] not in clusters_created
+                                                                              and row[1] not in clusters_created):
+                    # Connecting clusters as cycles in graph:
+                    cluster1 = scaled_graph.get_cluster(int(row[0]))
+                    cluster2 = scaled_graph.get_cluster(int(row[1]))
+                    scaled_graph.create_cluster(list(cluster1))
+                    scaled_graph.create_cluster(list(cluster2))
+                    clusters_created.append(row[0])
+                    clusters_created.append(row[1])
+                    # Adding edge between clusters:
+                    item1_cluster1 = list(cluster1)[0]
+                    item2_cluster2 = list(cluster2)[0]
+                    scaled_graph.add_edge(item1_cluster1, item2_cluster2, distance, weight)
+                elif isinstance(row[0], str) and isinstance(row[1], int) and row[1] not in clusters_created:
+                    # Connecting cluster as cycle in graph:
+                    cluster = scaled_graph.get_cluster(int(row[1]))
+                    scaled_graph.create_cluster(list(cluster))
+                    clusters_created.append(row[1])
+                    # Adding edge between vertex and cluster:
+                    item1_cluster = list(cluster)[0]
+                    item2 = row[0]
+                    scaled_graph.add_edge(item1_cluster, item2, distance, weight)
+                elif isinstance(row[0], int) and isinstance(row[1], str) and row[0] not in clusters_created:
+                    # Connecting cluster as cycle in graph:
+                    cluster = scaled_graph.get_cluster(int(row[0]))
+                    scaled_graph.create_cluster(list(cluster))
+                    clusters_created.append(row[0])
+                    # Adding edge between cluster and vertex:
+                    item1 = row[1]
+                    item2_cluster = list(cluster)[0]
+                    scaled_graph.add_edge(item1, item2_cluster, distance, weight)
+                else:
+                    scaled_graph.add_edge(row[0], row[1], distance, weight)
