@@ -1,7 +1,0 @@
-McDonald's_ID 
-Bus_Stop Distance
-Subway Distance
-Major_Landmark Distance
-Major_Intersection Distance
-Competing_Restaurants Distance
-END

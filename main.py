@@ -1,5 +1,9 @@
-"""
-LACK's Franchise Analyser
+"""CSC111 Project 2: LACK's Franchise Analyzer
+
+This module contains the main classes for Franchise Analyzer including _WeightedVertex, WeightedGraph,
+and GraphGenerator. This classes are meant to be imported and used in analyzer.py.
+
+Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (LACK)
 TODO: Finish file dosctring!
 TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
@@ -180,6 +184,19 @@ class WeightedGraph:
             weight_so_far += factor_weights[i] * row[i + 3]
         return 1 - weight_so_far
 
+    def get_neighbours(self, item: Any) -> set:
+        """Returns a set of the neighbours of the given item.
+
+        Note that the *items* are returned, not the _Vertex objects themselves.
+
+        Raise a ValueError if item does not appear as a vertex in this graph.
+        """
+        if item in self.vertices:
+            v = self.vertices[item]
+            return {neighbour.item for neighbour in v.neighbours}
+        else:
+            raise ValueError
+
     def get_vertices(self) -> dict[str, _WeightedVertex]:
         """Returns a dictionary mapping the item to its respective vertex.
 
@@ -193,6 +210,21 @@ class WeightedGraph:
                     all_vertices[subkey] = self.vertices[key][subkey]
         return all_vertices
 
+    def get_edges(self) -> set[tuple[str, str]]:
+        """Returns a list with all the edges in self.
+
+        The edge is represented by a tuple which contains the item of vertex1 and the item of vertex2.
+        """
+        all_edges = set()
+        all_vertices = self.get_vertices()
+
+        for item in all_vertices:
+            neighbours = self.get_neighbours(item)
+            for item2 in neighbours:
+                all_edges.add((item, item2))
+
+        return all_edges
+
     def get_cluster(self, cluster: int) -> dict[str, _WeightedVertex]:
         """Returns the vertices that are part of the given cluster.
         """
@@ -200,16 +232,15 @@ class WeightedGraph:
             if key == cluster:
                 return self.vertices[key]
 
-
-    def create_cycle(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
-        """Generates a cycle with the vertices with its respective items inside <vertices>. All edges have, by default,
-        weight equal 0 between each other (i.e. simulated real-world distance and weighted distance are both equal
+    def create_cluster(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
+        """Generates a cycle representation of a cluster with the vertices with its respective items inside <vertices>.
+        All edges have, by default, weight equal 0 between each other (i.e. simulated real-world distance and weighted distance are both equal
         to 0).
 
-        Used to organize clusters as a cycle.
+        If there are only 2 vertices inside the cluster they are connected to each other by an edge.
 
         Preconditions:
-         - all(v in self.get_vertices()
+         - all(v in self.get_vertices())
         """
         for i in range(len(vertices)):
             self.add_edge(vertices[i], vertices[(i + 1) % len(vertices)], 0, weights)
@@ -356,8 +387,8 @@ class GraphGenerator:
                 # Connecting clusters as cycles in graph:
                 cluster1 = scaled_graph.get_cluster(row[0])
                 cluster2 = scaled_graph.get_cluster(row[1])
-                scaled_graph.create_cycle(list(cluster1))
-                scaled_graph.create_cycle(list(cluster2))
+                scaled_graph.create_cluster(list(cluster1))
+                scaled_graph.create_cluster(list(cluster2))
                 clusters_created.append(row[0])
                 clusters_created.append(row[1])
                 # Adding edge between clusters:
@@ -367,7 +398,7 @@ class GraphGenerator:
             elif isinstance(row[0], str) and isinstance(row[1], int) and row[1] not in clusters_created:
                 # Connecting cluster as cycle in graph:
                 cluster = scaled_graph.get_cluster(row[1])
-                scaled_graph.create_cycle(list(cluster))
+                scaled_graph.create_cluster(list(cluster))
                 clusters_created.append(row[1])
                 # Adding edge between vertex and cluster:
                 item1_cluster = list(cluster)[0]
@@ -376,7 +407,7 @@ class GraphGenerator:
             elif isinstance(row[0], int) and isinstance(row[1], str) and row[0] not in clusters_created:
                 # Connecting cluster as cycle in graph:
                 cluster = scaled_graph.get_cluster(row[0])
-                scaled_graph.create_cycle(list(cluster))
+                scaled_graph.create_cluster(list(cluster))
                 clusters_created.append(row[0])
                 # Adding edge between cluster and vertex:
                 item1 = row[1]
