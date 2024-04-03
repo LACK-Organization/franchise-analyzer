@@ -28,7 +28,7 @@ class _WeightedVertex:
     """
     item: str
     vertex_data = dict
-    neighbours: dict[_WeightedVertex, list[Union[int, float]]]]
+    neighbours: dict[_WeightedVertex, list[Union[int, float]]]
     cluster: int
     coordinates: tuple[float, float]
     vertex_type: str
@@ -42,6 +42,44 @@ class _WeightedVertex:
         self.cluster = cluster
         self.coordinates = coordinates
         self.vertex_type: vertex_type
+
+    def best_weighted_score(self, vertex2: str, visited: set[_WeightedVertex]) -> float:
+        """Calculate the best weighted score between any two points on the graph based on the weighted edges.
+        We calculate the full weight of each edge as distance * (1 - weight). Then to find the weighted score between
+        two vertices, we find the least sum of all edges between the two vertices.
+
+        Preconditions:
+         - vertex1 is in graph
+         - vertex2 is in graph
+         - graph is connected
+        """
+        score = 0
+        visited.add(self)
+        for neighbour in self.neighbours:
+            if neighbour not in visited:
+                score += self.neighbours[neighbour][0] * (1 - self.neighbours[neighbour][1])
+                if neighbour == vertex2:
+                    return score
+                else:
+                    s = set()
+                    for n in neighbour.neighbours:
+                        set.add(n.best_weighted_score(vertex2, visited))
+
+                    shortest_path_score = min(s)
+                    return score + shortest_path_score
+
+
+    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str, visited: set[_WeightedVertex]):
+        """
+        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+        customer's location. Uses the weighed edges to calculate the path with the highest score.
+
+        Preconditions:
+         -
+        """
+        score_franchise1 = best_weighted_score(vertex, franchise1, graph, visite)
+        score_franchise2 = best_weighted_score(vertex, franchise2, graph)
+
 
 
 class WeightedGraph:
@@ -179,6 +217,7 @@ class WeightedGraph:
             # We didn't find an existing vertex for both items.
             return False
 
+
     def best_score(self, vertex1: str, vertex2: str, graph: WeightedGraph, visited: set[_WeightedVertex]):
         """Calculate the best score between any two points on the graph based on the weighted edges.
         """
@@ -262,33 +301,29 @@ class GraphGenerator:
             it's not part of a cluster);
          3. Vertex name (i.e. the <item>);
          4. Vertex data (i.e. number representation of the factors that describe that vertex).
+
+        TODO: Change function to work on every data_file based on headers
         """
         for row in vertex_data:
-            assert isinstance(row, list)  # TODO: remove loop invariants after coding
-
+            data_names_list = []
             if str(row[0]) == 'MCD':
                 data_names_list = ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews',
                                   'Operating Hours', 'Drive Through', 'Wifi']
-                data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
             elif str(row[0]) == 'OtherRestaurant':
                 data_names_list = ['Reviews', 'Client Similarity']
-                data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
             elif str(row[0]) == 'Landmark':
                 data_names_list = ['Significance']
-                data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
             elif str(row[0]) == 'Intersection Main':
                 data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic']
-                data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
             elif str(row[0]) == 'Intersection Small':
                 scaled_graph.add_vertex(row[2], {}, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
+            elif str(row[0]) == 'Intersection':
+                data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic',
+                                  'Longitude', 'Latitude']
             else:
                 data_names_list = ['Google Reviews']
-                data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
+            data_dict = self._map_name_to_data(data_names_list, row)
+            scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
 
     def _map_name_to_data(self, data_names: list[str], row: list) -> dict[str, Any]:
         """Helper function that returns a dictionary mapping each name from the given data_names list to its respective
