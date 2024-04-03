@@ -145,6 +145,7 @@ factor_weights = [0.45, 0.3, 0.2]  # TODO: Check weights
 generator = GraphGenerator('vertex_data.csv', 'edge_data.csv', factor_weights)
 scaled_graph = generator.scaled_graph
 normal_graph = generator.normal_graph
+visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges())
 
 # Main program loop
 state = True
