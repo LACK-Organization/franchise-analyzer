@@ -1,1 +1,0 @@
-'McDonald's_ID Daily_Customers Traffic_Around_Restaurant Advertisements Discounts Online_Reviews Drive_Thru Facilities Hours_of_Operation'
