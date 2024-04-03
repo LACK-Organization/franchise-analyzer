@@ -91,8 +91,8 @@ class _WeightedVertex:
         Preconditions:
          -
         """
-        score_franchise1 = best_weighted_path(vertex, franchise1)
-        score_franchise2 = best_weighted_path(vertex, franchise2)
+        score_franchise1 = self.best_weighted_path(vertex, franchise1)
+        score_franchise2 = self.best_weighted_path(vertex, franchise2)
 
 
 class WeightedGraph:
@@ -104,7 +104,7 @@ class WeightedGraph:
         - all(isinstance(self._vertices[item], _WeightedVertex) for item in self._vertices if isinstance(item, str))
 
     Private Instance Attributes:
-        - _vertices:
+        - vertices:
             A collection of the vertices contained in this graph.
             Maps item to _WeightedVertex object or to a list of Vertex objects if the key represents a cluster.
     """
@@ -256,6 +256,7 @@ class WeightedGraph:
         else:
             # We didn't find an existing vertex for both items.
             return False
+
 
 
 class GraphGenerator:
