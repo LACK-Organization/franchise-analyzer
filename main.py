@@ -201,20 +201,18 @@ class WeightedGraph:
                     all_vertices[subkey] = self.vertices[key][subkey]
         return all_vertices
 
-    def get_edges(self) -> list[tuple[str, str]]:
+    def get_edges(self) -> set[tuple[str, str]]:
         """Returns a list with all the edges in self.
 
         The edge is represented by a tuple which contains the item of vertex1 and the item of vertex2.
         """
-        visited = set()
-        all_edges = []
+        all_edges = set()
         all_vertices = self.get_vertices()
 
         for item in all_vertices:
-            if item not in visited:
-                neighbours = self.get_neighbours(item)
-                for item2 in neighbours:
-                    all_edges.append((item, item2))
+            neighbours = self.get_neighbours(item)
+            for item2 in neighbours:
+                all_edges.add((item, item2))
 
         return all_edges
 
