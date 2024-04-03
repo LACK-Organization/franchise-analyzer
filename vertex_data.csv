@@ -13,8 +13,23 @@ Landmark,14,AGO,2,-79.39248372345622,43.65366033465043
 Landmark,14,Grange Park,4,-79.392202,43.652594
 Landmark,14,OCAD,4.5,-79.39148174499432,43.65321279197304
 Landmark,4,Graffiti Alley,4.5,-79.39846666830827,43.64794326824828
-Intersection,4,QueenSpadina,0.09,27455,33667,-79.396376,43.648757
-Intersection,13,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
+IntersectionMain,4,QueenSpadina,0.09,27455,33667,-79.396376,43.648757
+IntersectionMain,13,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
+IntersectionSmall,0,CameronGrangeSpadina,-79.397624,43.651839
+IntersectionSmall,0,PhoebeSpadina,-79.396892,43.650072
+IntersectionSmall,0,SullivanSpadina,-79.397220,43.650894
+IntersectionSmall,0,DundasSimcoe,-79.389223,43.654681
+IntersectionSmall,0,GrangeHuron,-79.395682,43.652253
+IntersectionSmall,0,SullivanHuron,-79.395307,43.651292
+IntersectionSmall,0,PhoebeHuron,-79.394964,43.650468
+IntersectionSmall,0,PhoebeSoho,-79.393886,43.650631
+IntersectionSmall,0,PhoebeStephanieBeverley,-79.392676,43.651000
+IntersectionSmall,0,StephanieJohn,-79.391610,43.651183
+IntersectionSmall,0,QueenBeverley,-79.392123,43.649672
+IntersectionSmall,0,MichaelSweetStPatrick,-79.389327,43.652185
+IntersectionSmall,0,MichaelSweetSimcoe,-79.388270,43.652418
+IntersectionSmall,0,QueenStPatrick,-79.388607,43.650418
+IntersectionSmall,0,QueenSimcoe,-79.387487,43.650653
 TTC,11,Osgoode,5418,-79.386773,43.650629
 TTC,12,StPatricks,3362,-79.3883416423785,43.65485469249883
 TTC,5,DundasSpadinaSTC,528,-79.39807145787172,43.65293758903966
