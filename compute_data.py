@@ -1,8 +1,21 @@
-"""CSC111 Project 2: LACK's Franchise Analyzer
+"""CSC111 Project 2: CALK's Franchise Analyzer
 
 This module contains the functions responsible for computing the data.
 
-Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (LACK)
+Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (CALK)
+
+Copyright and Usage Information
+===============================
+
+This program is created solely for the personal and private use of CALK's members (Leandro Hamaguchi, Aryan Nair,
+Carlos Solares, and Karan Singh). All forms of distribution of this code, whether as given or with any changes,
+are expressly prohibited. For more information on copyright send a message to one of the following emails:
+ - l.brasil@mail.utoronto.ca
+ - aryan.nair@mail.utoronto.ca
+ - carlos.solares@mail.utoronto.ca
+ - karan.singh@mail.utoronto.ca
+
+This file is Copyright (c) CALK Team
 TODO: Finish file dosctring!
 TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
@@ -74,11 +87,9 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
             ttc_range_2 = f2.best_weighted_path(v, {f1})[0]
             ttc_proximity_1 += transit_score + ttc_range_1
             ttc_proximity_2 += transit_score + ttc_range_2
+        elif all_vertices[v].vertex_type == 'Landmark':
+            landmark_score = all_vertices[v].vertex_data
 
     final_score1 += ttc_proximity_1 - restaurant_competiton_1 # TODO: add weights to these factors.
     final_score2 += ttc_proximity_2 - restaurant_competiton_2
     return (round(final_score1/100, 2), round(final_score2/100, 2))
-
-
-# def proximity_to_transit(v1: str, transit_stop: str, visited: set[_WeightedVertex]) -> float:
-#     """Returns the score of the optimal path between a """

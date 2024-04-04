@@ -1,8 +1,21 @@
-"""CSC111 Project 2: LACK's Franchise Analyzer
+"""CSC111 Project 2: CALK's Franchise Analyzer
 
 This module contains the functions responsible for the data visualization.
 
-Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (LACK)
+Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (CALK)
+
+Copyright and Usage Information
+===============================
+
+This program is created solely for the personal and private use of CALK's members (Leandro Hamaguchi, Aryan Nair,
+Carlos Solares, and Karan Singh). All forms of distribution of this code, whether as given or with any changes,
+are expressly prohibited. For more information on copyright send a message to one of the following emails:
+ - l.brasil@mail.utoronto.ca
+ - aryan.nair@mail.utoronto.ca
+ - carlos.solares@mail.utoronto.ca
+ - karan.singh@mail.utoronto.ca
+
+This file is Copyright (c) CALK Team
 TODO: Finish file dosctring!
 TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
@@ -62,7 +75,7 @@ def visualize_map(vertex_data: dict[str, _WeightedVertex], edge_data: set[tuple[
     fig.show()
 
 
-def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, labels: list) -> None:
+def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, label_to_weight: dict[str, float]) -> None:
     """
        Creates a TreeMap visualization of all the factors that contribute to the success of the specified
        McDonald's location.
@@ -80,18 +93,11 @@ def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, labels: l
         for row in reader2:
             if str(row[0]) == 'MCD' and str(row[2]) == name:
                 mcdonalds_data = [float(row[3]), float(row[4]), float(row[5]),
-                                  float(row[6]), float(row[7]), float(row[8]), float(row[9])]
+                                  float(row[6]), float(row[7]), float(row[8]), float(row[9]), float(row[10])]
 
-    labels = ["Vehicular Traffic", "Pedestrain Traffic", "Bike Traffic", "Reviews", "Hours Open",
-              "Drive-Thru", "Wifi"]
-
-    tuple_of_ratios = [(mcdonalds_data[0] / lst[0] * 0.175, "Vehicular Traffic"),
-                       (mcdonalds_data[1] / lst[1] * 0.125, "Pedestrain Traffic"),
-                       (mcdonalds_data[2] / lst[2] * 0.05, "Bike Traffic"),
-                       (mcdonalds_data[3] / lst[3] * 0.2, "Reviews"),
-                       (mcdonalds_data[4] / lst[4] * 0.10, "Hours Open"),
-                       (mcdonalds_data[5] / lst[5] * 0.30, "Drive-Thru"),
-                       (mcdonalds_data[6] / lst[6] * 0.05, "Wifi")]
+    labels = list(label_to_weight)
+    items = list(label_to_weight.items())
+    tuple_of_ratios = [(mcdonalds_data[i] / lst[i] * items[i][1], items[i][0]) for i in range(len(items))]
 
     scores = []
     for score in tuple_of_ratios:
@@ -103,7 +109,7 @@ def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, labels: l
     for score in scores:
         ordered_variables.append(score[1])
 
-    parents = [1, 1, 1, 1, 1, 1, 1]
+    parents = [1, 1, 1, 1, 1, 1, 1, 1]
     for i in range(len(ordered_variables) - 1):
         if i == len(ordered_variables) - 1:
             k = labels.index(ordered_variables[i + 1])
@@ -119,7 +125,7 @@ def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, labels: l
     fig = go.Figure(go.Treemap(
         labels=labels,
         parents=parents,
-        marker_colors=["pink", "royalblue", "lightgray", "purple", "cyan", "lightgray", "lightblue"]
+        marker_colors=["pink", "royalblue", "lightgray", "purple", "cyan", "lightgray", "lightblue", "orange"]
     ))
 
     fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))

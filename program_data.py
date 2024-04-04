@@ -1,9 +1,23 @@
-"""CSC111 Project 2: LACK's Franchise Analyzer
+"""CSC111 Project 2: CALK's Franchise Analyzer
 
 This module contains the main classes for Franchise Analyzer including _WeightedVertex, WeightedGraph,
-and GraphGenerator. This classes are meant to be imported and used in analyzer.py.
+and GraphGenerator. This classes are meant to be imported and used in main.py and in other modules that contribute to
+main.py.
 
-Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (LACK)
+Created by Leandro Hamaguchi, Aryan Nair, Carlos Solares, and Karan Singh. (CALK)
+
+Copyright and Usage Information
+===============================
+
+This program is created solely for the personal and private use of CALK's members (Leandro Hamaguchi, Aryan Nair,
+Carlos Solares, and Karan Singh). All forms of distribution of this code, whether as given or with any changes,
+are expressly prohibited. For more information on copyright send a message to one of the following emails:
+ - l.brasil@mail.utoronto.ca
+ - aryan.nair@mail.utoronto.ca
+ - carlos.solares@mail.utoronto.ca
+ - karan.singh@mail.utoronto.ca
+
+This file is Copyright (c) CALK Team
 TODO: Finish file dosctring!
 TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
