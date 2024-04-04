@@ -96,7 +96,7 @@ def visualize_tree_map(treemap_data: str, vertex_data: str, name: str, label_to_
 
     labels = list(label_to_weight)
     items = list(label_to_weight.items())
-    tuple_of_ratios = [(mcdonalds_data[i] / lst[i] * items[i][1], items[i][0]) for i in range(len(items))]
+    tuple_of_ratios = [(mcdonalds_data[j] / lst[j] * items[j][1], items[j][0]) for j in range(len(items))]
 
     scores = []
     for score in tuple_of_ratios:
