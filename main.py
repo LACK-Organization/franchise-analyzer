@@ -38,40 +38,40 @@ INTANGIBLE_MCD_FACTOR_WEIGHTS = {
     'OperatingHours': 0.1, 'DriveThru': 0.2, 'Wifi': 0.05, 'PhysicalLimitations': 0.17
 }
 TANGIBLE_FACTOR_WEIGHTS = [0.45, 0.35, 0.2]
-cluster_color_code = {
+CLUSTER_COLOR_CODE = {
     0: 'light blue', 1: 'salmon', 2: 'green', 3: 'red', 4: 'sandybrown', 5: 'blue', 6: 'turquoise', 7: 'brown',
     8: 'orange', 9: 'yellow', 10: 'coral', 11: 'purple', 12: 'palegoldenrod', 13: 'seashell', 14: 'olive'
 }
 mcd1, mcd2 = 'MCDQueenSpadina', 'MCDAGO'
 
-generator = GraphGenerator('vertex_data.csv', 'edge_data.csv',
+GENERATOR = GraphGenerator('vertex_data.csv', 'edge_data.csv',
                            TANGIBLE_FACTOR_WEIGHTS, INTANGIBLE_FACTOR_CATEGORIES)
-scaled_graph = generator.scaled_graph
-normal_graph = generator.normal_graph
+SCALED_GRAPH = GENERATOR.scaled_graph
+NORMAL_GRAPH = GENERATOR.normal_graph
 
 # Main program loop
-state = True
-menu = ['map', 'treemap1', 'treemap2', 'compute', 'exit']
+STATE = False
+MENU = ['map', 'treemap1', 'treemap2', 'compute', 'exit']
 print("Initializing analyzer...\n")
 
-while state:
-    user_input = input(f"Type a command from the following menu {menu}: ").strip()
-    if user_input == 'exit':
-        state = False
-    elif user_input == 'map':
-        visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges(), cluster_color_code)
-    elif user_input == 'treemap1':
+while STATE:
+    USER_INPUT = input(f"Type a command from the following menu {MENU}: ").strip()
+    if USER_INPUT == 'exit':
+        STATE = False
+    elif USER_INPUT == 'map':
+        visualize_map(SCALED_GRAPH.get_vertices(), SCALED_GRAPH.get_edges(), CLUSTER_COLOR_CODE)
+    elif USER_INPUT == 'treemap1':
         visualize_tree_map('treemap_data.csv', 'vertex_data.csv', mcd1,
                            INTANGIBLE_MCD_FACTOR_WEIGHTS)
-    elif user_input == 'treemap2':
+    elif USER_INPUT == 'treemap2':
         visualize_tree_map('treemap_data.csv', 'vertex_data.csv', mcd2,
                            INTANGIBLE_MCD_FACTOR_WEIGHTS)
-    elif user_input == 'compute':
-        mcd1_score, mcd2_score = calculate_score(mcd1, mcd2, INTANGIBLE_MCD_FACTOR_WEIGHTS, scaled_graph)
-        print(f'Queen-Spadina McDonald\'s score: {mcd1_score}\n'
-              f'AGO McDonald\'s score: {mcd2_score}\n')
+    elif USER_INPUT == 'compute':
+        MCD1_SCORE, MCD2_SCORE = calculate_score(mcd1, mcd2, INTANGIBLE_MCD_FACTOR_WEIGHTS, SCALED_GRAPH)
+        print(f'Queen-Spadina McDonald\'s score: {MCD1_SCORE}\n'
+              f'AGO McDonald\'s score: {MCD2_SCORE}\n')
     else:
-        user_input = input("Enter a valid command: ")
+        USER_INPUT = input("Enter a valid command: ")
 
 
 if __name__ == '__main__':
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['csv', 'plotly.graph_objects', 'program_data'],
-        'disable': [],
+        'extra-imports': ['program_data', 'visualizer', 'compute_data'],
+        'disable': ['E9998', 'E9997', 'E9992', 'W0401 '],
         'allowed-io': ['_check_len_data_row', 'load_edge_data', 'load_vertex_data'],
         'max-line-length': 120
     })
