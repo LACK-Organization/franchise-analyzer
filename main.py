@@ -72,3 +72,22 @@ while state:
               f'AGO McDonald\'s score: {mcd2_score}\n')
     else:
         user_input = input("Enter a valid command: ")
+
+
+if __name__ == '__main__':
+    import python_ta.contracts
+
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod()
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['csv', 'plotly.graph_objects', 'program_data'],
+        'disable': [],
+        'allowed-io': ['_check_len_data_row', 'load_edge_data', 'load_vertex_data'],
+        'max-line-length': 120
+    })

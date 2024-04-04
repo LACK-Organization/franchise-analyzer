@@ -49,7 +49,6 @@ def visualize_map(vertex_data: dict[str, _WeightedVertex], edge_data: set[tuple[
             line=dict(width=2, color='black'),
         ))
 
-    # Add markers for the vertices
     for vertex_item, details in vertex_to_params.items():
         c = cluster_color_code[details['cluster']]
         fig.add_trace(go.Scattermapbox(
