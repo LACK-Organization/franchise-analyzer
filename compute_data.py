@@ -37,8 +37,9 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
     final_score2 = 0
 
     for u in graph.vertices:
-        final_score1 += 1 / f1.best_weighted_path(u, set())[0]
-        final_score2 += 1 / f2.best_weighted_path(u, set())[0]
+        if graph.vertices[u].vertex_type not in {'OtherRestaurant', 'TTC'}:
+            final_score1 += 1 / f1.best_weighted_path(u, set())[0]
+            final_score2 += 1 / f2.best_weighted_path(u, set())[0]
 
     f1_data = list(f1.vertex_data.values())
     f2_data = list(f2.vertex_data.values())
@@ -51,4 +52,32 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
 
     final_score1 += f1_intangibles
     final_score2 += f2_intangibles
+
+    restaurant_competiton_1 = 0
+    restaurant_competiton_2 = 0
+    ttc_proximity_1 = 0
+    ttc_proximity_2 = 0
+    all_vertices = graph.vertices
+    for v in all_vertices:
+        if all_vertices[v].vertex_type == 'OtherRestaurant':
+            competing_score = 0.65 * all_vertices[v].vertex_data['Client SImilarity']\
+                              + 0.35 * all_vertices[v].vertex_data['Review']
+            restaurant_range_1 = f1.best_weighted_path(v, {f2})[0]
+            restaurant_range_2 = f2.best_weighted_path(v, {f1})[0]
+            restaurant_competiton_1 += competing_score + restaurant_range_1
+            restaurant_competiton_2 += competing_score + restaurant_range_2
+        elif all_vertices[v].vertex_type == 'TTC':
+            transit_score = all_vertices[v].vertex_data['Ridership'] / 731880  # 731880 is the largest average number of
+            # daily TTC riders at a Subway Station (Bloor-Yonge).
+            ttc_range_1 = f1.best_weighted_path(v, {f2})[0]
+            ttc_range_2 = f2.best_weighted_path(v, {f1})[0]
+            ttc_proximity_1 += transit_score + ttc_range_1
+            ttc_proximity_2 += transit_score + ttc_range_2
+
+    final_score1 += ttc_proximity_1 - restaurant_competiton_1
+    final_score2 += ttc_proximity_2 - restaurant_competiton_2
     return (final_score1, final_score2)
+
+
+# def proximity_to_transit(v1: str, transit_stop: str, visited: set[_WeightedVertex]) -> float:
+#     """Returns the score of the optimal path between a """
