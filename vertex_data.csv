@@ -1,18 +1,18 @@
 MCD,4,QueenSpadina,27455,33667,2359,3.5,24,0,1, 0.8, -79.396705,43.648677
 MCD,13,AGO,16441,12216,830,3.4,13,0,0, 0.35, -79.391204,43.653729
-OtherRestaurant,3,Banh Mi Boys,4.5,1,-79.396882,43.648641
+OtherRestaurant,3,BanhMiBoys,4.5,1,-79.396882,43.648641
 OtherRestaurant,3,Popeyes,3.9,3,-79.397095,43.648607
-OtherRestaurant,3,Kinton Ramen,4.4,1,-79.397173,43.648598
-OtherRestaurant,2,Midori Ramen,4.4,1,-79.397690,43.648488
-OtherRestaurant,2,Shelbys Shwarma,4.7,2,-79.397829,43.648453
+OtherRestaurant,3,KintonRamen,4.4,1,-79.397173,43.648598
+OtherRestaurant,2,MidoriRamen,4.4,1,-79.397690,43.648488
+OtherRestaurant,2,ShelbysShwarma,4.7,2,-79.397829,43.648453
 OtherRestaurant,1,Raku,4.4,1,-79.399405,43.648120
-OtherRestaurant,0,Juicy Dumpling,4.5,2,-79.398778,43.652762
+OtherRestaurant,0,JuicyDumpling,4.5,2,-79.398778,43.652762
 OtherRestaurant,4,A&W,3.8,3,-79.396057,43.648825
 OtherRestaurant,0,Chick-fil-A,4.4,3,-79.394982,43.649056
 Landmark,14,AGO,2,-79.39248372345622,43.65366033465043
-Landmark,14,Grange Park,4,-79.392202,43.652594
+Landmark,14,GrangePark,4,-79.392202,43.652594
 Landmark,14,OCAD,4.5,-79.39148174499432,43.65321279197304
-Landmark,4,Graffiti Alley,4.5,-79.39846666830827,43.64794326824828
+Landmark,4,GraffitiAlley,4.5,-79.39846666830827,43.64794326824828
 IntersectionMain,4,QueenSpadina,0.09,27455,33667,-79.396376,43.648757
 IntersectionMain,14,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
 IntersectionSmall,0,CameronGrangeSpadina,-79.397624,43.651839

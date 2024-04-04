@@ -145,23 +145,14 @@ class WeightedGraph:
               or (distance == 0 and weight == 0)
             - (self.vertices[item1].cluster > 0 and self.vertices[item2].cluster > 0) == (distance == 0)
         """
-        if item1 not in self.vertices or item2 not in self.vertices:
-            raise ValueError
+        all_vertices = self.get_vertices()
+        if item1 in all_vertices and item2 in all_vertices:
+            v1 = all_vertices[item1]
+            v2 = all_vertices[item2]
+            v1.neighbours[v2] = [distance, weight]
+            v2.neighbours[v1] = [distance, weight]
         else:
-            v1 = self.vertices[item1]
-            v2 = self.vertices[item2]
-            if v1.cluster != 0 and v2.cluster == 0:
-                v1[list(self.vertices.keys())[0]].neighbours[v2] = [distance, weight]
-                v2.neighbours[v1] = [distance, weight]
-            elif v1.cluster == 0 and v2.cluster != 0:
-                v1.neighbours[v2] = [distance, weight]
-                v2[list(self.vertices.keys())[0]].neighbours[v1] = [distance, weight]
-            elif v1.cluster != 0 and v2.cluster != 0:
-                v1[list(self.vertices.keys())[0]].neighbours[v2] = [distance, weight]
-                v2[list(self.vertices.keys())[0]].neighbours[v1] = [distance, weight]
-            else:
-                v1.neighbours[v2] = [distance, weight]
-                v2.neighbours[v1] = [distance, weight]
+            raise ValueError
 
     def calculate_edge_weight(self, row: list, factor_weights: list[float]) -> float:
         """Returns the weight of the edge between the vertex with item 1 and the vertex with item 2 based on the data
@@ -179,7 +170,7 @@ class WeightedGraph:
         """
         weight_so_far = 0
         for i in range(len(factor_weights)):
-            weight_so_far += factor_weights[i] * row[i + 3]
+            weight_so_far += factor_weights[i] * float(row[i + 3])
         return 1 - weight_so_far
 
     def get_neighbours(self, item: Any) -> set:
@@ -189,8 +180,9 @@ class WeightedGraph:
 
         Raise a ValueError if item does not appear as a vertex in this graph.
         """
-        if item in self.vertices:
-            v = self.vertices[item]
+        all_vertices = self.get_vertices()
+        if item in all_vertices:
+            v = all_vertices[item]
             return {neighbour.item for neighbour in v.neighbours}
         else:
             raise ValueError
@@ -230,7 +222,7 @@ class WeightedGraph:
             if key == cluster:
                 return self.vertices[key]
 
-    def create_cluster(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
+    def create_cycle(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
         """Generates a cycle representation of a cluster with the vertices with its respective items inside <vertices>.
         All edges have, by default, weight equal 0 between each other (i.e. simulated real-world distance and weighted distance are both equal
         to 0).
@@ -320,10 +312,11 @@ class GraphGenerator:
         """
         graph = WeightedGraph()
         self.load_vertex_data(graph, vertex_data, vertex_data_categories)
+        self.load_clusters(graph)
         self.load_edge_data(graph, edge_data, factor_weights)
         return graph
 
-    def load_vertex_data(self, scaled_graph: WeightedGraph, vertex_data: str,
+    def load_vertex_data(self, graph: WeightedGraph, vertex_data: str,
                          vertex_data_categories: dict[str, list[str]]) -> None:
         """Populates the given WeightedGraph with the vertices retrieved from the given vertex data file.
 
@@ -354,7 +347,7 @@ class GraphGenerator:
                 else:
                     data_names_list = vertex_data_categories[types[5]]
                 data_dict = self._map_name_to_data(data_names_list, row)
-                scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
+                graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
 
     def _map_name_to_data(self, data_names: list[str], row: list) -> dict[str, Any]:
         """Helper function that returns a dictionary mapping each name from the given data_names list to its respective
@@ -365,7 +358,16 @@ class GraphGenerator:
             data_dict[data_names[i]] = str(row[i])
         return data_dict
 
-    def load_edge_data(self, scaled_graph: WeightedGraph, edge_data: str, factor_weights: list[float]) -> None:
+    def load_clusters(self, graph: WeightedGraph) -> None:
+        """Generates all clusters in the graph as cycles. Except when the cluster has 2 vertices, then they are
+        connected by one edge in between them.
+        """
+        amount_of_clusters = sum(1 for item in graph.vertices if isinstance(item, int))
+        for cluster in range(1, amount_of_clusters + 1):
+            vertices = list(graph.vertices[cluster])
+            graph.create_cycle(vertices)
+
+    def load_edge_data(self, graph: WeightedGraph, edge_data: str, factor_weights: list[float]) -> None:
         """Generates edges for the given scaled_graph based on the information given in the edge_data csv file.
         This
 
@@ -379,42 +381,42 @@ class GraphGenerator:
 
         TODO: finish this docstring
         """
-        with open(edge_data) as edge_data:
+        with (open(edge_data) as edge_data):
             edge_data = csv.reader(edge_data)
-            clusters_created = []
             for row in edge_data:
                 distance = int(row[2])
-                weight = scaled_graph.calculate_edge_weight(row, factor_weights)
-                if (isinstance(row[0], int) and isinstance(row[1], int)) and (row[0] not in clusters_created
-                                                                              and row[1] not in clusters_created):
-                    # Connecting clusters as cycles in graph:
-                    cluster1 = scaled_graph.get_cluster(int(row[0]))
-                    cluster2 = scaled_graph.get_cluster(int(row[1]))
-                    scaled_graph.create_cluster(list(cluster1))
-                    scaled_graph.create_cluster(list(cluster2))
-                    clusters_created.append(row[0])
-                    clusters_created.append(row[1])
-                    # Adding edge between clusters:
+                weight = graph.calculate_edge_weight(row, factor_weights)
+                items = self._convert_type([row[0], row[1]])
+                item_row0 = items[0]
+                item_row1 = items[1]
+                if isinstance(item_row0, int) and isinstance(item_row1, int):
+                    cluster1 = graph.get_cluster(int(item_row0))
+                    cluster2 = graph.get_cluster(int(item_row1))
                     item1_cluster1 = list(cluster1)[0]
                     item2_cluster2 = list(cluster2)[0]
-                    scaled_graph.add_edge(item1_cluster1, item2_cluster2, distance, weight)
-                elif isinstance(row[0], str) and isinstance(row[1], int) and row[1] not in clusters_created:
-                    # Connecting cluster as cycle in graph:
-                    cluster = scaled_graph.get_cluster(int(row[1]))
-                    scaled_graph.create_cluster(list(cluster))
-                    clusters_created.append(row[1])
-                    # Adding edge between vertex and cluster:
+                    graph.add_edge(item1_cluster1, item2_cluster2, distance, weight)
+                elif isinstance(item_row0, str) and isinstance(item_row1, int):
+                    cluster = graph.get_cluster(int(item_row1))
                     item1_cluster = list(cluster)[0]
-                    item2 = row[0]
-                    scaled_graph.add_edge(item1_cluster, item2, distance, weight)
-                elif isinstance(row[0], int) and isinstance(row[1], str) and row[0] not in clusters_created:
-                    # Connecting cluster as cycle in graph:
-                    cluster = scaled_graph.get_cluster(int(row[0]))
-                    scaled_graph.create_cluster(list(cluster))
-                    clusters_created.append(row[0])
-                    # Adding edge between cluster and vertex:
-                    item1 = row[1]
+                    item2 = item_row0
+                    graph.add_edge(item1_cluster, item2, distance, weight)
+                elif isinstance(item_row0, int) and isinstance(item_row1, str):
+                    cluster = graph.get_cluster(int(item_row0))
+                    item1 = item_row1
                     item2_cluster = list(cluster)[0]
-                    scaled_graph.add_edge(item1, item2_cluster, distance, weight)
+                    graph.add_edge(item1, item2_cluster, distance, weight)
                 else:
-                    scaled_graph.add_edge(row[0], row[1], distance, weight)
+                    graph.add_edge(item_row0, item_row1, distance, weight)
+
+    def _convert_type(self, items: list[str | int]) -> list[str | int]:
+        """Tries to convert each item in a list into an integer, and if it can, mutates the list to convert the item
+        to an integer.
+        """
+        for i in range(len(items)):
+            try:
+                items[i] = int(items[i])
+            except ValueError:
+                pass
+
+        items_alias = items
+        return items_alias

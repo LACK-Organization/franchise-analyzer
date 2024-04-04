@@ -1,9 +1,9 @@
+SullivanSpadina,PhoebeSpadina,94,0.33,1.0,0.9
 1,2,106,0.5,1.0,0.9
 2,3,82,0.5,1.0,0.9
 3,4,86,0.33,1.0,0.9
 CameronGrangeSpadina,3,416,0.33,0.25,0.8
 4,PhoebeSpadina,251,0.33,1.0,0.9
-SullivanSpadina,PhoebeSpadina,94,0.33,1.0,0.9
 CameronGrangeSpadina,SullivanSpadina,103,0.33,1.0,0.9
 CameronGrangeSpadina,5,130,0.33,1.0,0.9
 JuicyDumpling,5,63,0.33,1.0,0.9
@@ -19,11 +19,11 @@ SullivanHuron,14,192,0.5,0.25,0.8
 PhoebeSpadina,PhoebeHuron,153,0.5,0.25,0.8
 PhoebeHuron,PhoebeSoho,86,0.5,0.25,0.8
 PhoebeSoho,PhoebeStephanieBeverley,106,0.5,0.25,0.8
-PhoebeStephanieBeverly,StephanieJohn,86,0.5,0.25,0.8
+PhoebeStephanieBeverley,StephanieJohn,86,0.5,0.25,0.8
 StephanieJohn,10,116,0.5,0.25,0.8
 6,GrangeHuron,127,0.33,0.25,0.8
 GrangeHuron,SullivanHuron,113,0.5,0.25,0.8
-HuronSullivan,PhoebeSullivan,97,0.5,0.25,0.8
+SullivanHuron,PhoebeHuron,97,0.5,0.25,0.8
 PhoebeSoho,7,145,0.5,0.25,0.8
 14,PhoebeStephanieBeverley,108,0.5,0.75,0.8
 PhoebeStephanieBeverley,QueenBeverley,142,0.5,0.75,0.8
