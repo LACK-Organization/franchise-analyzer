@@ -25,10 +25,12 @@ class _WeightedVertex:
         - cluster: An integer representing the cluster the vertex is a part of. A cluster value
         of 0 means that the vertex is not part of any cluster.
         - coordinates: The coordinates of the vertex.
+        - vertex_type: The type of the vertex
 
     Representation Invariants:
         - self not in self.neighbours
         - all(self in u.neighbours for u in self.neighbours)
+        - self.vertex_type in {'MCD', 'OtherRestaurant', 'Landmark', 'IntersectionMain', 'IntersectionSmall', 'TTC'}
     """
     item: str
     vertex_data = dict[str, float]
@@ -75,7 +77,7 @@ class _WeightedVertex:
                     score += best_score[0]
                     path += best_score[1]
                     all_neighbours[score] = path
-
+# R1702 (too-many-nested-blocks) error ignored due to recursive nature of function
             if all_neighbours == {}:
                 return [score, path]
             else:
@@ -83,25 +85,6 @@ class _WeightedVertex:
                 path = all_neighbours[min(all_neighbours)]
 
                 return [min_path_score, path]
-
-    # def calculate_vertex_score(self):
-    #     """
-    #     Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
-    #     customer's location. Uses the weighed edges to calculate the path with the highest score.
-    #
-    #     Preconditions:
-    #      - self.item in {'TTC', 'OtherRestaurant', 'Landmark'}
-    #     """
-    #
-    #     # if self.item == 'IntersectionMain':
-    #     #     return 0.35 * self.vertex_data['Bike per car ratio'] + 0.3 * self.vertex_data['Vehicle Traffic Volume']\
-    #     #             + 0.35 * self.vertex_data['Pedestrian Traffic Volume']
-    #     if self.item == 'TTC':
-    #         return self.vertex_data['Ridership'] # TODO: Come up with a weight for the ridership.
-    #     elif self.item == 'OtherRestaurant':
-    #         return 0.5 * self.vertex_data['Review'] + 0.5 * self.vertex_data['ClientSimilarity']
-    #     # else:
-    #     #     score =
 
 
 class WeightedGraph:
@@ -230,6 +213,8 @@ class WeightedGraph:
             if key == cluster:
                 return self.vertices[key]
 
+        raise ValueError
+
     def create_cycle(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
         """Generates a cycle representation of a cluster with the vertices with its respective items inside <vertices>.
         All edges have, by default, weight equal 0 between each other (i.e. simulated real-world distance and weighted
@@ -309,8 +294,8 @@ class GraphGenerator:
         len_data_row = 0
         with open(data_file) as edge_data:
             line = csv.reader(edge_data.readline())
-            for row in line:  # gets the length of the first row and breaks the loop
-                len_data_row = len(row)
+            for row in line:  # gets the length of the first row and breaks the loop, so loop only runs once.
+                len_data_row = len(row)  # Thus E9996 error ignored.
                 break
         return len_data_row
 
@@ -335,13 +320,12 @@ class GraphGenerator:
          3. Vertex name (i.e. the <item>);
          4. Vertex data (i.e. number representation of the factors that describe that vertex).
 
-        TODO: Change function to work on every data_file based on headers
         TODO: Update docstring
         """
         types = list(vertex_data_categories)
-        with open(vertex_data) as vertex_data:
-            vertex_data = csv.reader(vertex_data)
-            for row in vertex_data:
+        with open(vertex_data) as v_data:
+            reader = csv.reader(v_data)
+            for row in reader:
                 if str(row[0]) == types[0]:
                     data_names_list = vertex_data_categories[types[0]]
                 elif str(row[0]) == types[1]:
@@ -389,9 +373,9 @@ class GraphGenerator:
 
         TODO: finish this docstring
         """
-        with (open(edge_data) as edge_data):
-            edge_data = csv.reader(edge_data)
-            for row in edge_data:
+        with open(edge_data) as e_data:
+            reader = csv.reader(e_data)
+            for row in reader:
                 distance = int(row[2])
                 weight = graph.calculate_edge_weight(row, factor_weights)
                 items = self._convert_type([row[0], row[1]])
@@ -428,3 +412,22 @@ class GraphGenerator:
 
         items_alias = items
         return items_alias
+
+
+if __name__ == '__main__':
+    import python_ta.contracts
+
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod()
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['csv', 'plotly.graph_objects', 'program_data'],
+        'disable': ['E9996', 'R0914', 'R0913', 'E9998', 'R1702'],
+        'allowed-io': ['_check_len_data_row', 'load_edge_data', 'load_vertex_data'],
+        'max-line-length': 120
+    })
