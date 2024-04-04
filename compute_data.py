@@ -16,9 +16,6 @@ are expressly prohibited. For more information on copyright send a message to on
  - karan.singh@mail.utoronto.ca
 
 This file is Copyright (c) CALK Team
-TODO: Finish file dosctring!
-TODO: Add RI and IA to every class (update if needed)!
-TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 from program_data import _WeightedVertex, WeightedGraph
 
@@ -37,14 +34,13 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
-    Tangible data includes physical/locational factors such as proximity to public transit, landmarks nearby, ...
-    TODO (To be filled)
-
-    Intangible data includes factors like customer reviews, customer service, infrastructure, number of
-    daily customers, ... TO DO (To be filled)
+    Intangible factors are the factors of each of the McDonald's, and the tangible factors are weighted using edge
+    weights.
 
     Preconditions:
-        TODO: Fill this in
+        - graph.vertices != {}
+        - franchise1 and franchise2 are valid franchises in the input graph.
+        - len(factor_weights) must be equal to at least the length of the vertex_data attribute of the 2 franchises.
     """
     f1, f2 = get_franchises(franchise1, franchise2, graph)
     final_score1 = 0

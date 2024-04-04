@@ -18,9 +18,6 @@ are expressly prohibited. For more information on copyright send a message to on
  - karan.singh@mail.utoronto.ca
 
 This file is Copyright (c) CALK Team
-TODO: Finish file dosctring!
-TODO: Add RI and IA to every class (update if needed)!
-TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 from __future__ import annotations
 import csv
@@ -30,14 +27,15 @@ from typing import Any, Union
 class _WeightedVertex:
     """A vertex in a graph.
 
-    Instance Attributes: TODO: update docstring
+    Instance Attributes:
         - item: The name of this vertex.
-        - vertex_data: The data stored within this vertex.
+        - vertex_data: The numerical data represnting factors of this vertex. Example: Reviews for vertice of
+                       OtherRestauarnts type.
         - neighbours: A dictionary mapping the vertices that are adjacent to this vertex to a list with the first item
-        as the real life distance from one vertex to the other and the second item as the actual graph weight of the
-        edge.
-        - cluster: An integer representing the cluster the vertex is a part of. A cluster value
-        of 0 means that the vertex is not part of any cluster.
+                      as the real life distance from one vertex to the other and the second item as the actual graph
+                      weight of the edge.
+        - cluster: An integer representing the cluster the vertex is a part of. A cluster value of 0 means that the
+                   vertex is not part of any cluster.
         - coordinates: The coordinates of the vertex.
         - vertex_type: The type of the vertex
 
