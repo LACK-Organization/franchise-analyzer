@@ -25,7 +25,11 @@ generator = GraphGenerator('vertex_data.csv', 'edge_data.csv',
                            TANGIBLE_FACTOR_WEIGHTS, INTANGIBLE_FACTOR_CATEGORIES)
 scaled_graph = generator.scaled_graph
 normal_graph = generator.normal_graph
-visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges())
+
+cluster_color_code = {
+    0: 'light blue', 1: 'salmon', 2: 'green', 3: 'red', 4: 'sandybrown', 5: 'blue', 6: 'turquoise', 7: 'brown',
+    8: 'orange', 9: 'yellow', 10: 'coral', 11: 'purple', 12: 'palegoldenrod', 13: 'seashell', 14: 'olive'
+}
 
 # Main program loop
 state = True
@@ -33,12 +37,12 @@ menu = ['sg', 'ng', 'exit', '.']
 print("Initializing analyzer...\n")
 
 while state:
-    user_input = input("Type a command: ")
+    user_input = input("Type a command from the following menu [sg, ng, exit]: ").strip()
     if user_input == 'exit':
         state = False
     elif user_input == 'sg':
-        visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges())  # TODO: implement
+        visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges(), cluster_color_code)  # TODO: implement
     elif user_input == 'ng':
-        visualize_square_graph()  # TODO: implement
+        visualize_map(normal_graph.get_vertices(), normal_graph.get_edges(), cluster_color_code)  # TODO: implement
     else:
         user_input = input("Enter a valid command: ")
