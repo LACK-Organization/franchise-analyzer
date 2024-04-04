@@ -45,7 +45,7 @@ class _WeightedVertex:
         self.neighbours = neighbours
         self.cluster = cluster
         self.coordinates = coordinates
-        self.vertex_type: vertex_type
+        self.vertex_type = vertex_type
 
     def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex])\
             -> list[Union[float, list[_WeightedVertex]]]:
@@ -67,7 +67,10 @@ class _WeightedVertex:
         else:
             for u in self.neighbours:
                 if u not in visited:
-                    score += self.neighbours[u][0] * (1 - self.neighbours[u][1])
+                    if u.cluster != self.cluster:
+                        score += self.neighbours[u][0] * (1 - self.neighbours[u][1])
+                    else:
+                        score += 1 - self.neighbours[u][1]
                     best_score = u.best_weighted_path(vertex2, visited)
                     score += best_score[0]
                     path += best_score[1]
@@ -99,7 +102,6 @@ class _WeightedVertex:
     #         return 0.5 * self.vertex_data['Review'] + 0.5 * self.vertex_data['ClientSimilarity']
     #     # else:
     #     #     score =
-
 
 
 class WeightedGraph:
@@ -230,8 +232,8 @@ class WeightedGraph:
 
     def create_cycle(self, vertices: list[str], weights: Union[list[float], float] = 0.0) -> None:
         """Generates a cycle representation of a cluster with the vertices with its respective items inside <vertices>.
-        All edges have, by default, weight equal 0 between each other (i.e. simulated real-world distance and weighted distance are both equal
-        to 0).
+        All edges have, by default, weight equal 0 between each other (i.e. simulated real-world distance and weighted
+        distance are both equal to 0).
 
         If there are only 2 vertices inside the cluster they are connected to each other by an edge.
 
