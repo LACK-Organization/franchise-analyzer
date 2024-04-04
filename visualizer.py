@@ -16,9 +16,6 @@ are expressly prohibited. For more information on copyright send a message to on
  - karan.singh@mail.utoronto.ca
 
 This file is Copyright (c) CALK Team
-TODO: Finish file dosctring!
-TODO: Add RI and IA to every class (update if needed)!
-TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 import csv
 import plotly.graph_objects as go

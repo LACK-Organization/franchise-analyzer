@@ -284,6 +284,7 @@ class GraphGenerator:
         vertex_data: path to a csv file containing information about every vertex.
         edge_data: path to a csv file containing information about every weighted edge.
         factor_weights: list with decimals used to weigh each component that composes the total weight of an edge.
+        vertex_data_categories: A dictionary which maps the vertex to the categories of data associted with it.
 
         Preconditions:
          - all(_check_len_data_row(edge_data_file) - 3 == len(factor_weights) for row in edge_data)
@@ -333,8 +334,7 @@ class GraphGenerator:
             it's not part of a cluster);
          3. Vertex name (i.e. the <item>);
          4. Vertex data (i.e. number representation of the factors that describe that vertex).
-
-        TODO: Update docstring
+         5. Vertex coordinates (the geographical coordinates of each vertex)
         """
         types = list(vertex_data_categories)
         with open(vertex_data) as v_data:
@@ -375,17 +375,16 @@ class GraphGenerator:
 
     def load_edge_data(self, graph: WeightedGraph, edge_data: str, factor_weights: list[float]) -> None:
         """Generates edges for the given scaled_graph based on the information given in the edge_data csv file.
-        This
 
         edge_data is a csv file that contains the following data about each edge;
          1. v1 and v2, v1 and a cluster, a cluster and v2, or a cluster and another cluster;
          2. The real life distance in meters between one vertex and the other;
          3. Other important information that describe that edge (i.e. a road).
 
+         Each factor in edge data is multiplied by the corrisponding weight in factor_weights.
+
         Preconditions:
          - len(scaled_graph._vertices) >= 2
-
-        TODO: finish this docstring
         """
         with open(edge_data) as e_data:
             reader = csv.reader(e_data)
