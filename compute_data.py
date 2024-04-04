@@ -19,7 +19,7 @@ def get_franchises(franchise1: str, franchise2: str, graph: WeightedGraph) -> tu
     return (v1, v2)
 
 
-def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float], graph: WeightedGraph) -> \
+def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, float], graph: WeightedGraph) -> \
         tuple[float, float]:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
@@ -43,12 +43,12 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
             final_score1 += 1 / f1.best_weighted_path(item, set())[0]
             final_score2 += 1 / f2.best_weighted_path(item, set())[0]
 
-    f1_data = list(f1.vertex_data.values())
-    f2_data = list(f2.vertex_data.values())
+    f1_data = f1.vertex_data
+    f2_data = f2.vertex_data
 
     f1_intangibles = 0
     f2_intangibles = 0
-    for i in range(len(factor_weights)):
+    for i in factor_weights:
         f1_intangibles += factor_weights[i] * f1_data[i]
         f2_intangibles += factor_weights[i] * f2_data[i]
 

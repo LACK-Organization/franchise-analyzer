@@ -27,7 +27,7 @@ generator = GraphGenerator('vertex_data.csv', 'edge_data.csv',
 scaled_graph = generator.scaled_graph
 normal_graph = generator.normal_graph
 
-calculate_score('QueenSpadina', 'AGO', [0.175, 0.125, 0.05, 0.2, 0.1, 0.3, 0.05], scaled_graph)
+calculate_score('QueenSpadina', 'AGO', {'Vehicular Traffic': 0.175, 'Pedestrian Traffic': 0.125, 'Bike Traffic': 0.05, 'Reviews': 0.2, 'Operating Hours': 0.1, 'Drive-Thru': 0.3, 'Wifi': 0.05}, scaled_graph)
 
 cluster_color_code = {
     0: 'light blue', 1: 'salmon', 2: 'green', 3: 'red', 4: 'sandybrown', 5: 'blue', 6: 'turquoise', 7: 'brown',

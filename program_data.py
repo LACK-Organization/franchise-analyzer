@@ -67,7 +67,10 @@ class _WeightedVertex:
         else:
             for u in self.neighbours:
                 if u not in visited:
-                    score += self.neighbours[u][0] * (1 - self.neighbours[u][1])
+                    if u.cluster != self.cluster:
+                        score += self.neighbours[u][0] * (1 - self.neighbours[u][1])
+                    else:
+                        score += 1 - self.neighbours[u][1]
                     best_score = u.best_weighted_path(vertex2, visited)
                     score += best_score[0]
                     path += best_score[1]
