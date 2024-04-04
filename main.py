@@ -50,7 +50,7 @@ SCALED_GRAPH = GENERATOR.scaled_graph
 NORMAL_GRAPH = GENERATOR.normal_graph
 
 # Main program loop
-STATE = False
+STATE = True
 MENU = ['map', 'treemap1', 'treemap2', 'compute', 'exit']
 print("Initializing analyzer...\n")
 
