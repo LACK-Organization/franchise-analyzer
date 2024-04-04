@@ -2,7 +2,8 @@ SullivanSpadina,PhoebeSpadina,94,0.33,1.0,0.9
 1,2,106,0.5,1.0,0.9
 2,3,82,0.5,1.0,0.9
 3,4,86,0.33,1.0,0.9
-CameronGrangeSpadina,3,416,0.33,0.25,0.8
+CameronGrangeSpadina,Cameron,73,0.33,0.25,0.8
+Cameron,QueenCameron,343,0.33,0.25,0.8
 4,PhoebeSpadina,251,0.33,1.0,0.9
 CameronGrangeSpadina,SullivanSpadina,103,0.33,1.0,0.9
 CameronGrangeSpadina,5,130,0.33,1.0,0.9
@@ -10,8 +11,10 @@ JuicyDumpling,5,63,0.33,1.0,0.9
 5,6,162,0.33,1.0,0.9
 6,DundasBeverley,191,0.33,1.0,0.9
 DundasBeverley,14,0,0.33,1.0,0.9
-14,13,93,0.5,1.0,0.9
-13,DundasSimcoe,89,0.5,1.0,0.9
+DundasBeverley,DundasMcCaul,201,0.5,1.0,0.9
+DundasMcCaul,DundasStPatrick,93,0.5,1.0,0.9
+DundasMcCaul,14,0,0.5,1.0,0.9
+DundasStPatrick,DundasSimcoe,89,0.5,1.0,0.9
 DundasSimcoe,12,73,0.5,1.0,0.9
 CameronGrangeSpadina,GrangeHuron,152,0.33,0.25,0.8
 GrangeHuron,GrangeBeverley,192,0.5,0.25,0.8
@@ -33,10 +36,10 @@ PhoebeSoho,7,145,0.5,0.25,0.8
 SullivanBeverley,PhoebeStephanieBeverley,108,0.5,0.75,0.8
 PhoebeStephanieBeverley,QueenBeverley,142,0.5,0.75,0.8
 StephanieJohn,8,151,0.5,0.25,0.8
-14,10,109,0.5,0.5,0.8
+DundasMcCaul,10,331,0.5,0.5,0.8
 10,9,150,0.5,0.5,0.8
 MichaelSweetStPatrick,MichaelSweetSimcoe,90,0.5,0.25,0.8
-13,MichaelSweetStPatrick,268,0.5,0.5,0.8
+MichaelSweetStPatrick,DundasStPatrick,268,0.5,0.5,0.8
 MichaelSweetStPatrick,QueenStPatrick,206,0.5,0.5,0.8
 DundasSimcoe,MichaelSweetSimcoe,268,0.6,0.25,0.8
 MichaelSweetSimcoe,QueenSimcoe,206,0.5,0.25,0.8
