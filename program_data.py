@@ -56,10 +56,7 @@ class _WeightedVertex:
         NEW IMPLEMENTATION: Returns a list of two elements: the score, and a list of the vertices in the chosen path.
 
         Preconditions:
-         - vertex1 != vertex2
-         - vertex1 is in graph
-         - vertex2 is in graph
-         - WeightedGraph is connected
+         - self and vertex2 are connected or self.item == vertex2.item
         """
         score = 0
         visited.add(self)
@@ -84,24 +81,24 @@ class _WeightedVertex:
 
                 return [min_path_score, path]
 
-    def calculate_vertex_score(self):
-        """
-        Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
-        customer's location. Uses the weighed edges to calculate the path with the highest score.
-
-        Preconditions:
-         - self.item in {'IntersectionMain', 'TTC', 'OtherRestaurant', 'Landmark'}
-        """
-
-        if self.item == 'IntersectionMain':
-            return 0.35 * self.vertex_data['Bike per car ratio'] + 0.3 * self.vertex_data['Vehicle Traffic Volume']\
-                    + 0.35 * self.vertex_data['Pedestrian Traffic Volume']
-        elif self.item == 'TTC':
-            return self.vertex_data['Ridership'] # TODO: Come up with a weight for the ridership.
-        elif self.item == 'OtherRestaurant':
-            return 0.5 * self.vertex_data['Review'] + 0.5 * self.vertex_data['ClientSimilarity']
-        # else:
-        #     score =
+    # def calculate_vertex_score(self):
+    #     """
+    #     Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
+    #     customer's location. Uses the weighed edges to calculate the path with the highest score.
+    #
+    #     Preconditions:
+    #      - self.item in {'TTC', 'OtherRestaurant', 'Landmark'}
+    #     """
+    #
+    #     # if self.item == 'IntersectionMain':
+    #     #     return 0.35 * self.vertex_data['Bike per car ratio'] + 0.3 * self.vertex_data['Vehicle Traffic Volume']\
+    #     #             + 0.35 * self.vertex_data['Pedestrian Traffic Volume']
+    #     if self.item == 'TTC':
+    #         return self.vertex_data['Ridership'] # TODO: Come up with a weight for the ridership.
+    #     elif self.item == 'OtherRestaurant':
+    #         return 0.5 * self.vertex_data['Review'] + 0.5 * self.vertex_data['ClientSimilarity']
+    #     # else:
+    #     #     score =
 
 
 
