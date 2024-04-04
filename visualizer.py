@@ -22,19 +22,18 @@ def visualize_map(vertex_data: dict[str, _WeightedVertex], edge_data: set[tuple[
     for item in vertex_data:
         vertex_to_params[item] = {'coordinates': vertex_data[item].coordinates,
                                   'cluster': vertex_data[item].cluster}
-    # Connections (lines) between vertices
+
     connections = edge_data
 
     fig = go.Figure()
 
-    # Add lines for each connection
     for conn in connections:
         start_vertex, end_vertex = conn
         fig.add_trace(go.Scattermapbox(
             mode="lines",
             lon=[vertex_to_params[start_vertex]['coordinates'][0], vertex_to_params[end_vertex]['coordinates'][0]],
             lat=[vertex_to_params[start_vertex]['coordinates'][1], vertex_to_params[end_vertex]['coordinates'][1]],
-            line=dict(width=2, color='black'),  # Customize line color here
+            line=dict(width=2, color='black'),
         ))
 
     # Add markers for the vertices
@@ -53,8 +52,8 @@ def visualize_map(vertex_data: dict[str, _WeightedVertex], edge_data: set[tuple[
     fig.update_layout(
         mapbox={
             'style': "open-street-map",
-            'zoom': 15,  # Adjust the zoom level as needed
-            'center': {'lon': -79.392887, 'lat': 43.651471}  # Center of the map for better visualization
+            'zoom': 15,
+            'center': {'lon': -79.392887, 'lat': 43.651471}
         },
         showlegend=True,
         margin={'l': 0, 'r': 0, 'b': 0, 't': 0}
@@ -140,7 +139,7 @@ if __name__ == '__main__':
 
     python_ta.check_all(config={
         'extra-imports': ['csv', 'plotly.graph_objects', 'program_data'],
-        'disable': ['R0914'],
+        'disable': ['R0914', 'R1735'],
         'allowed-io': ['visualize_tree_map', 'load_tree_map'],
         'max-line-length': 120
     })
