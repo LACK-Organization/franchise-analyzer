@@ -47,7 +47,7 @@ class _WeightedVertex:
         self.coordinates = coordinates
         self.vertex_type: vertex_type
 
-    def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex]) -> list:
+    def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex]) -> list[float, list[_WeightedVertex]]:
         """Calculate the best weighted score between any two points on the graph based on the weighted edges.
         We calculate the full weight of each edge as distance * (1 - weight). Then to find the weighted score between
         two vertices, we find the least sum of all edges between the two vertices.
@@ -67,10 +67,10 @@ class _WeightedVertex:
         if self == vertex2:
             return [score, path]
         else:
-            for neighbour in self.neighbours:
-                if neighbour not in visited:
-                    score += self.neighbours[neighbour][0] * (1 - self.neighbours[neighbour][1])
-                    best_score = neighbour.best_weighted_path(vertex2, visited)
+            for u in self.neighbours:
+                if u not in visited:
+                    score += self.neighbours[u][0] * (1 - self.neighbours[u][1])
+                    best_score = u.best_weighted_path(vertex2, visited)
                     score += best_score[0]
                     path += best_score[1]
                     all_neighbours[score] = path
