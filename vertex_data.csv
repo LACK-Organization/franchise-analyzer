@@ -1,5 +1,5 @@
 MCD,4,QueenSpadina,27455,33667,2359,3.5,24,0,1, 0.8, -79.396705,43.648677
-MCD,13,AGO,16441,12216,830,3.4,13,0,0, 0.35, -79.391204,43.653729
+MCD,14,AGO,16441,12216,830,3.4,13,0,0, 0.35, -79.391204,43.653729
 OtherRestaurant,3,BanhMiBoys,4.5,1,-79.396882,43.648641
 OtherRestaurant,3,Popeyes,3.9,3,-79.397095,43.648607
 OtherRestaurant,3,KintonRamen,4.4,1,-79.397173,43.648598
@@ -12,10 +12,11 @@ OtherRestaurant,0,Chick-fil-A,4.4,3,-79.394982,43.649056
 Landmark,14,AGO,2,-79.39248372345622,43.65366033465043
 Landmark,14,GrangePark,4,-79.392202,43.652594
 Landmark,14,OCAD,4.5,-79.39148174499432,43.65321279197304
-Landmark,4,GraffitiAlley,4.5,-79.39846666830827,43.64794326824828
+Landmark,4,GraffitiAlley,4.5,-79.396810,43.648266
 IntersectionMain,4,QueenSpadina,0.09,27455,33667,-79.396376,43.648757
-IntersectionMain,14,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
+IntersectionMain,0,DundasMcCaul,0.05,16441,12216,-79.391436,43.654309
 IntersectionSmall,0,CameronGrangeSpadina,-79.397624,43.651839
+IntersectionSmall,0,Cameron,-79.398654,43.651594
 IntersectionSmall,0,PhoebeSpadina,-79.396892,43.650072
 IntersectionSmall,0,SullivanSpadina,-79.397220,43.650894
 IntersectionSmall,0,DundasSimcoe,-79.389223,43.654681
@@ -38,8 +39,8 @@ IntersectionSmall,7,QueenSoho,-79.393439,43.649401
 IntersectionSmall,8,QueenJohn,-79.391091,43.649869
 IntersectionSmall,11,QueenUniversity,-79.386619,43.650839
 IntersectionSmall,12,DundasUniversity,-79.388504,43.654798
-IntersectionSmall,13,StPatrickDundas,-79.390303,43.654454
-IntersectionSmall,14,DundasBeverley,-79.393820,43.653784
+IntersectionSmall,13,DundasStPatrick,-79.390303,43.654454
+IntersectionSmall,0,DundasBeverley,-79.393820,43.653784
 IntersectionSmall,6,DundasHuron,-79.396134,43.653313
 IntersectionSmall,5,DundasSpadina,-79.397930,43.652946
 IntersectionSmall,10,StephanieMcCaul,-79.390260,43.651482
