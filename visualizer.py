@@ -8,17 +8,19 @@ TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 import plotly.graph_objects as go
+from program_data import _WeightedVertex
 
 
-def visualize_map(final_data: dict, edge_data: set):
+def visualize_map(vertex_data: dict[str, _WeightedVertex], edge_data: set[tuple[str, str]],
+                  cluster_color_code: dict[int, str]) -> None:
     """
     Creates a map visualization of the region we're considering, i.e., where the Franchises, Transit points and the
     Landmarks are located.
     """
-    vertices = {}
-    for vertex in final_data:
-        vertices[vertex.item] = {'coordinates': final_data[vertex].vertex_data['coordinates'],
-                                 'cluster': final_data[vertex].vertex_data['cluster']}
+    vertex_to_params = {}
+    for item in vertex_data:
+        vertex_to_params[item] = {'coordinates': vertex_data[item].coordinates,
+                                  'cluster': vertex_data[item].cluster}
     # Connections (lines) between vertices
     connections = edge_data
 
@@ -29,58 +31,29 @@ def visualize_map(final_data: dict, edge_data: set):
         start_vertex, end_vertex = conn
         fig.add_trace(go.Scattermapbox(
             mode="lines",
-            lon=[vertices[start_vertex]['coordinates'][0], vertices[end_vertex]['coordinates'][0]],
-            lat=[vertices[start_vertex]['coordinates'][1], vertices[end_vertex]['coordinates'][1]],
+            lon=[vertex_to_params[start_vertex]['coordinates'][0], vertex_to_params[end_vertex]['coordinates'][0]],
+            lat=[vertex_to_params[start_vertex]['coordinates'][1], vertex_to_params[end_vertex]['coordinates'][1]],
             line=dict(width=2, color='black'),  # Customize line color here
         ))
 
     # Add markers for the vertices
-    for vertex, details in vertices.items():
-        if details['cluster'] == 0:
-            c = 'light blue'
-        elif details['cluster'] == 1:
-            c = 'salmon'
-        elif details['cluster'] == 2:
-            c = 'green'
-        elif details['cluster'] == 3:
-            c = 'red'
-        elif details['cluster'] == 4:
-            c = 'sandybrown'
-        elif details['cluster'] == 5:
-            c = 'blue'
-        elif details['cluster'] == 6:
-            c = 'turquoise'
-        elif details['cluster'] == 7:
-            c = 'brown'
-        elif details['cluster'] == 8:
-            c = 'orange'
-        elif details['cluster'] == 9:
-            c = 'yellow'
-        elif details['cluster'] == 10:
-            c = 'coral'
-        elif details['cluster'] == 11:
-            c = 'purple'
-        elif details['cluster'] == 12:
-            c = 'palegoldenrod'
-        elif details['cluster'] == 13:
-            c = 'seashell'
-        elif details['cluster'] == 14:
-            c = 'olive'
+    for vertex_item, details in vertex_to_params.items():
+        c = cluster_color_code[details['cluster']]
         fig.add_trace(go.Scattermapbox(
             mode="markers+text",
             lon=[details['coordinates'][0]],
             lat=[details['coordinates'][1]],
             marker={'size': 10, 'color': c},
-            name=vertex,
-            text=vertex,
+            name=vertex_item,
+            text=vertex_item,
             textposition="top center"
         ))
 
     fig.update_layout(
         mapbox={
             'style': "open-street-map",
-            'zoom': 5,  # Adjust the zoom level as needed
-            'center': {'lon': 35, 'lat': 25}  # Center of the map for better visualization
+            'zoom': 15,  # Adjust the zoom level as needed
+            'center': {'lon': -79.392887, 'lat': 43.651471}  # Center of the map for better visualization
         },
         showlegend=True,
         margin={'l': 0, 'r': 0, 'b': 0, 't': 0}

@@ -290,7 +290,7 @@ class GraphGenerator:
         """
         len_edge_data_row = self._check_len_data_row(edge_data_file)
         self.normal_graph = self.load_graph(vertex_data_file, edge_data_file,
-                                            [] * len_edge_data_row, vertex_data_categories)
+                                            [0] * len_edge_data_row, vertex_data_categories)
         self.scaled_graph = self.load_graph(vertex_data_file, edge_data_file, factor_weights, vertex_data_categories)
 
     def _check_len_data_row(self, data_file: str) -> int:
