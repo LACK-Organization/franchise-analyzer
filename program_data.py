@@ -84,16 +84,25 @@ class _WeightedVertex:
 
                 return [min_path_score, path]
 
-    def calculate_customer_choice(self, vertex: str, franchise1: str, franchise2: str):
+    def calculate_vertex_score(self):
         """
         Calculate which McDonald's a customer would be more likely to go to, given the vertex of the
         customer's location. Uses the weighed edges to calculate the path with the highest score.
 
         Preconditions:
-         -
+         - self.item in {'IntersectionMain', 'TTC', 'OtherRestaurant', 'Landmark'}
         """
-        score_franchise1 = self.best_weighted_path(vertex, franchise1)
-        score_franchise2 = self.best_weighted_path(vertex, franchise2)
+
+        if self.item == 'IntersectionMain':
+            return 0.35 * self.vertex_data['Bike per car ratio'] + 0.3 * self.vertex_data['Vehicle Traffic Volume']\
+                    + 0.35 * self.vertex_data['Pedestrian Traffic Volume']
+        elif self.item == 'TTC':
+            return self.vertex_data['Ridership'] # TODO: Come up with a weight for the ridership.
+        elif self.item == 'OtherRestaurant':
+            return 0.5 * self.vertex_data['Review'] + 0.5 * self.vertex_data['ClientSimilarity']
+        # else:
+        #     score =
+
 
 
 class WeightedGraph:
