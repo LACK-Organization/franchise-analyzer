@@ -33,7 +33,7 @@ class _WeightedVertex:
         - self.vertex_type in {'MCD', 'OtherRestaurant', 'Landmark', 'IntersectionMain', 'IntersectionSmall', 'TTC'}
     """
     item: str
-    vertex_data = dict[str, float]
+    vertex_data : dict[str, float]
     neighbours: dict[_WeightedVertex, list[Union[int, float]]]
     cluster: int
     coordinates: tuple[float, float]
