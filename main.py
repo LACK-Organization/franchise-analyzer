@@ -13,7 +13,7 @@ are expressly prohibited. For more information on copyright send a message to on
  - l.brasil@mail.utoronto.ca
  - aryan.nair@mail.utoronto.ca
  - carlos.solares@mail.utoronto.ca
- - karan.singh@mail.utoronto.ca
+ - kar.singh@mail.utoronto.ca
 
 This file is Copyright (c) CALK Team
 """
