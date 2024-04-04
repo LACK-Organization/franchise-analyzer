@@ -19,7 +19,8 @@ def get_franchises(franchise1: str, franchise2: str, graph: WeightedGraph) -> tu
     return (v1, v2)
 
 
-def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float], graph: WeightedGraph) -> tuple[float, float]:
+def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float], graph: WeightedGraph) -> \
+        tuple[float, float]:
     """
     Calculates and returns score for each Franchise based on intangible and tangible data.
 
@@ -35,11 +36,12 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
     f1, f2 = get_franchises(franchise1, franchise2, graph)
     final_score1 = 0
     final_score2 = 0
+    all_vertices = graph.get_vertices()
 
-    for u in graph.vertices:
-        if graph.vertices[u].vertex_type not in {'OtherRestaurant', 'TTC'}:
-            final_score1 += 1 / f1.best_weighted_path(u, set())[0]
-            final_score2 += 1 / f2.best_weighted_path(u, set())[0]
+    for item in all_vertices:
+        if all_vertices[item].vertex_type not in {'OtherRestaurant', 'TTC'}:
+            final_score1 += 1 / f1.best_weighted_path(item, set())[0]
+            final_score2 += 1 / f2.best_weighted_path(item, set())[0]
 
     f1_data = list(f1.vertex_data.values())
     f2_data = list(f2.vertex_data.values())
@@ -57,10 +59,9 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
     restaurant_competiton_2 = 0
     ttc_proximity_1 = 0
     ttc_proximity_2 = 0
-    all_vertices = graph.vertices
     for v in all_vertices:
         if all_vertices[v].vertex_type == 'OtherRestaurant':
-            competing_score = 0.65 * all_vertices[v].vertex_data['Client SImilarity']\
+            competing_score = 0.65 * all_vertices[v].vertex_data['Client Similarity']\
                               + 0.35 * all_vertices[v].vertex_data['Review']
             restaurant_range_1 = f1.best_weighted_path(v, {f2})[0]
             restaurant_range_2 = f2.best_weighted_path(v, {f1})[0]
@@ -74,7 +75,7 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
             ttc_proximity_1 += transit_score + ttc_range_1
             ttc_proximity_2 += transit_score + ttc_range_2
 
-    final_score1 += ttc_proximity_1 - restaurant_competiton_1
+    final_score1 += ttc_proximity_1 - restaurant_competiton_1 # TODO: add weights to these factors.
     final_score2 += ttc_proximity_2 - restaurant_competiton_2
     return (final_score1, final_score2)
 
