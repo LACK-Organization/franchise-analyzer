@@ -8,14 +8,19 @@ CameronGrangeSpadina,SullivanSpadina,103,0.33,1.0,0.9
 CameronGrangeSpadina,5,130,0.33,1.0,0.9
 JuicyDumpling,5,63,0.33,1.0,0.9
 5,6,162,0.33,1.0,0.9
-6,14,191,0.33,1.0,0.9
+6,DundasBeverley,191,0.33,1.0,0.9
+DundasBeverley,14,0,0.33  TODO
 14,13,93,0.5,1.0,0.9
 13,DundasSimcoe,89,0.5,1.0,0.9
 DundasSimcoe,12,73,0.5,1.0,0.9
 CameronGrangeSpadina,GrangeHuron,152,0.33,0.25,0.8
-GrangeHuron,14,192,0.5,0.25,0.8
+GrangeHuron,GrangeBeverly,192,0.5,0.25,0.8
+GrangeBeverly,14 TODO
 SullivanSpadina,SullivanHuron,164,0.33,0.25,0.8
-SullivanHuron,14,192,0.5,0.25,0.8
+SullivanHuron,SullivanBeverly,192,0.5,0.25,0.8
+SullivanBeverly,14 TODO
+DundasBeverley,GrangeBeverley TODO
+GrangeBeverley,SullivanBeverley TODO
 PhoebeSpadina,PhoebeHuron,153,0.5,0.25,0.8
 PhoebeHuron,PhoebeSoho,86,0.5,0.25,0.8
 PhoebeSoho,PhoebeStephanieBeverley,106,0.5,0.25,0.8
@@ -25,7 +30,8 @@ StephanieJohn,10,116,0.5,0.25,0.8
 GrangeHuron,SullivanHuron,113,0.5,0.25,0.8
 SullivanHuron,PhoebeHuron,97,0.5,0.25,0.8
 PhoebeSoho,7,145,0.5,0.25,0.8
-14,PhoebeStephanieBeverley,108,0.5,0.75,0.8
+SullivanBeverley,PhoebeStephanieBeverley,108,0.5,0.75,0.8
+SullivanBeverley, 14 TODO
 PhoebeStephanieBeverley,QueenBeverley,142,0.5,0.75,0.8
 StephanieJohn,8,151,0.5,0.25,0.8
 14,10,109,0.5,0.5,0.8
