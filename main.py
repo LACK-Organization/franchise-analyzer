@@ -8,6 +8,7 @@ TODO: Add RI and IA to every class (update if needed)!
 TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, etc.)
 """
 from program_data import *
+from visualizer import *
 
 
 factor_weights = [0.45, 0.3, 0.2]  # TODO: Check weights
@@ -26,7 +27,7 @@ while state:
     if user_input == 'exit':
         state = False
     elif user_input == 'sg':
-        visualize_map()  # TODO: implement
+        visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges())  # TODO: implement
     elif user_input == 'ng':
         visualize_square_graph()  # TODO: implement
     else:

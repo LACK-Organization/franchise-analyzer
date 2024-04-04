@@ -49,6 +49,6 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: list[float
         f1_intangibles += factor_weights[i] * f1_data[i]
         f2_intangibles += factor_weights[i] * f2_data[i]
 
-    final_score1 += f1_score
-    final_score2 += f2_score
+    final_score1 += f1_intangibles
+    final_score2 += f2_intangibles
     return (final_score1, final_score2)

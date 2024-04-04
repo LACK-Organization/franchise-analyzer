@@ -47,7 +47,8 @@ class _WeightedVertex:
         self.coordinates = coordinates
         self.vertex_type: vertex_type
 
-    def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex]) -> list[float, list[_WeightedVertex]]:
+    def best_weighted_path(self, vertex2: str, visited: set[_WeightedVertex])\
+            -> list[Union[float, list[_WeightedVertex]]]:
         """Calculate the best weighted score between any two points on the graph based on the weighted edges.
         We calculate the full weight of each edge as distance * (1 - weight). Then to find the weighted score between
         two vertices, we find the least sum of all edges between the two vertices.
@@ -122,18 +123,15 @@ class WeightedGraph:
         """
         if cluster == 0:
             if item not in self.vertices:
-                self.vertices[item] = _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
-                                                       vertex_type)
+                self.vertices[item] = _WeightedVertex(
+                    item, vertex_data, {}, cluster, coordinates, vertex_type)
         else:
             if cluster not in self.vertices:
-                self.vertices[cluster] = {item: _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
-                                                                 vertex_type)}
+                self.vertices[cluster] = {item: _WeightedVertex(
+                    item, vertex_data, {}, cluster, coordinates, vertex_type)}
             else:
-                self.vertices[cluster][item] = _WeightedVertex(item, vertex_data, {}, cluster, coordinates,
-                                                                vertex_type)
-                # TODO: If time permits, make a helper to connect the vertices in a
-                                                   # cycle.
-
+                self.vertices[cluster][item] = _WeightedVertex(
+                    item, vertex_data, {}, cluster, coordinates, vertex_type)
 
     def add_edge(self, item1: str, item2: str, distance: int, weight: float = 1.0) -> None:
         """Add an edge between the two vertices with the given items in this graph,
@@ -256,7 +254,6 @@ class WeightedGraph:
         else:
             # We didn't find an existing vertex for both items.
             return False
-
 
 
 class GraphGenerator:
