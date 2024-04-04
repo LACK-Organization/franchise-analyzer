@@ -10,9 +10,19 @@ TODO: Explain, in the docstring, new terms created (e.g. cluster, vertex type, e
 from program_data import *
 from visualizer import *
 
+INTANGIBLE_FACTOR_CATEGORIES = {
+    'MCD': ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through',
+            'Wifi', 'Physical Limitations'],
+    'OtherRestaurant': ['Reviews', 'Client Similarity'],
+    'Landmark': ['Significance'],
+    'IntersectionMain': ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic'],
+    'IntersectionSmall': [],
+    'TTC': ['Google Reviews']
+}
+TANGIBLE_FACTOR_WEIGHTS = [0.45, 0.35, 0.2]  # TODO: Check weights
 
-factor_weights = [0.45, 0.3, 0.2]  # TODO: Check weights
-generator = GraphGenerator('vertex_data.csv', 'edge_data.csv', factor_weights)
+generator = GraphGenerator('vertex_data.csv', 'edge_data.csv',
+                           TANGIBLE_FACTOR_WEIGHTS, INTANGIBLE_FACTOR_CATEGORIES)
 scaled_graph = generator.scaled_graph
 normal_graph = generator.normal_graph
 visualize_map(scaled_graph.get_vertices(), scaled_graph.get_edges())

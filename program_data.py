@@ -277,7 +277,8 @@ class GraphGenerator:
     normal_graph: WeightedGraph
     scaled_graph: WeightedGraph
 
-    def __init__(self, vertex_data_file: str, edge_data_file: str, factor_weights: list[float]) -> None:
+    def __init__(self, vertex_data_file: str, edge_data_file: str, factor_weights: list[float],
+                 vertex_data_categories: dict[str, list[str]]) -> None:
         """Initialize a new WeightedGraph representation of the region in between two franchises
         based on data collected.
 
@@ -296,8 +297,9 @@ class GraphGenerator:
          - Third column of vertex_data contains the name of the vertex (i.e. vertex item).
         """
         len_edge_data_row = self._check_len_data_row(edge_data_file)
-        self.normal_graph = self.load_graph(vertex_data_file, edge_data_file, [] * len_edge_data_row)
-        self.scaled_graph = self.load_graph(vertex_data_file, edge_data_file, factor_weights)
+        self.normal_graph = self.load_graph(vertex_data_file, edge_data_file,
+                                            [] * len_edge_data_row, vertex_data_categories)
+        self.scaled_graph = self.load_graph(vertex_data_file, edge_data_file, factor_weights, vertex_data_categories)
 
     def _check_len_data_row(self, data_file: str) -> int:
         """Returns the length of a row in the data_file.
@@ -312,15 +314,17 @@ class GraphGenerator:
                 break
         return len_data_row
 
-    def load_graph(self, vertex_data: str, edge_data: str, factor_weights: list[float]) -> WeightedGraph:
+    def load_graph(self, vertex_data: str, edge_data: str, factor_weights: list[float],
+                   vertex_data_categories: dict[str, list[str]]) -> WeightedGraph:
         """Returns a loaded WeightedGraph representation of the region in between two franchises.
         """
         graph = WeightedGraph()
-        self.load_vertex_data(graph, vertex_data)
+        self.load_vertex_data(graph, vertex_data, vertex_data_categories)
         self.load_edge_data(graph, edge_data, factor_weights)
         return graph
 
-    def load_vertex_data(self, scaled_graph: WeightedGraph, vertex_data: str) -> None:
+    def load_vertex_data(self, scaled_graph: WeightedGraph, vertex_data: str,
+                         vertex_data_categories: dict[str, list[str]]) -> None:
         """Populates the given WeightedGraph with the vertices retrieved from the given vertex data file.
 
         vertex_data is a csv file containing the following information about each vertex:
@@ -331,27 +335,24 @@ class GraphGenerator:
          4. Vertex data (i.e. number representation of the factors that describe that vertex).
 
         TODO: Change function to work on every data_file based on headers
+        TODO: Update docstring
         """
+        types = list(vertex_data_categories)
         with open(vertex_data) as vertex_data:
             vertex_data = csv.reader(vertex_data)
             for row in vertex_data:
-                data_names_list = []
-                if str(row[0]) == 'MCD':
-                    data_names_list = ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews',
-                                       'Operating Hours', 'Drive Through', 'Wifi']
-                elif str(row[0]) == 'OtherRestaurant':
-                    data_names_list = ['Reviews', 'Client Similarity']
-                elif str(row[0]) == 'Landmark':
-                    data_names_list = ['Significance']
-                elif str(row[0]) == 'Intersection Main':
-                    data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic']
-                elif str(row[0]) == 'Intersection Small':
-                    scaled_graph.add_vertex(row[2], {}, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
-                elif str(row[0]) == 'Intersection':
-                    data_names_list = ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic',
-                                       'Longitude', 'Latitude']
+                if str(row[0]) == types[0]:
+                    data_names_list = vertex_data_categories[types[0]]
+                elif str(row[0]) == types[1]:
+                    data_names_list = vertex_data_categories[types[1]]
+                elif str(row[0]) == types[2]:
+                    data_names_list = vertex_data_categories[types[2]]
+                elif str(row[0]) == types[3]:
+                    data_names_list = vertex_data_categories[types[3]]
+                elif str(row[0]) == types[4]:
+                    data_names_list = vertex_data_categories[types[4]]
                 else:
-                    data_names_list = ['Google Reviews']
+                    data_names_list = vertex_data_categories[types[5]]
                 data_dict = self._map_name_to_data(data_names_list, row)
                 scaled_graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
 
