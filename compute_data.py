@@ -48,9 +48,9 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
 
     f1_intangibles = 0
     f2_intangibles = 0
-    for i in factor_weights:
-        f1_intangibles += factor_weights[i] * f1_data[i]
-        f2_intangibles += factor_weights[i] * f2_data[i]
+    for key in factor_weights:
+        f1_intangibles += factor_weights[key] * f1_data[key]
+        f2_intangibles += factor_weights[key] * f2_data[key]
 
     final_score1 += f1_intangibles
     final_score2 += f2_intangibles
@@ -61,8 +61,8 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
     ttc_proximity_2 = 0
     for v in all_vertices:
         if all_vertices[v].vertex_type == 'OtherRestaurant':
-            competing_score = 0.65 * all_vertices[v].vertex_data['Client Similarity']\
-                              + 0.35 * all_vertices[v].vertex_data['Review']
+            competing_score = 0.65 * all_vertices[v].vertex_data['ClientSimilarity']\
+                              + 0.35 * all_vertices[v].vertex_data['Reviews']
             restaurant_range_1 = f1.best_weighted_path(v, {f2})[0]
             restaurant_range_2 = f2.best_weighted_path(v, {f1})[0]
             restaurant_competiton_1 += competing_score + restaurant_range_1
@@ -77,7 +77,7 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
 
     final_score1 += ttc_proximity_1 - restaurant_competiton_1 # TODO: add weights to these factors.
     final_score2 += ttc_proximity_2 - restaurant_competiton_2
-    return (final_score1, final_score2)
+    return (round(final_score1/100, 2), round(final_score2/100, 2))
 
 
 # def proximity_to_transit(v1: str, transit_stop: str, visited: set[_WeightedVertex]) -> float:

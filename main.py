@@ -12,27 +12,29 @@ from visualizer import *
 from compute_data import *
 
 INTANGIBLE_FACTOR_CATEGORIES = {
-    'MCD': ['Vehicular Traffic', 'Pedestrian Traffic', 'Bike Traffic', 'Reviews', 'Operating Hours', 'Drive Through',
-            'Wifi', 'Physical Limitations'],
-    'OtherRestaurant': ['Reviews', 'Client Similarity'],
+    'MCD': ['VehicularTraffic', 'PedestrianTraffic', 'BikeTraffic', 'Reviews', 'OperatingHours', 'DriveThru',
+            'Wifi', 'PhysicalLimitations'],
+    'OtherRestaurant': ['Reviews', 'ClientSimilarity'],
     'Landmark': ['Significance'],
-    'IntersectionMain': ['Bike Per Car Ratio', 'Vehicular Traffic', 'Pedestrian Traffic Traffic'],
+    'IntersectionMain': ['BikePerCarRatio', 'VehicularTraffic', 'PedestrianTraffic'],
     'IntersectionSmall': [],
-    'TTC': ['Google Reviews']
+    'TTC': ['Ridership']
 }
-TANGIBLE_FACTOR_WEIGHTS = [0.45, 0.35, 0.2]  # TODO: Check weights
+INTANGIBLE_FACTOR_WEIGHTS = {
+    'VehicularTraffic': 0.175, 'PedestrianTraffic': 0.125, 'BikeTraffic': 0.05, 'Reviews': 0.2,
+    'OperatingHours': 0.1, 'DriveThru': 0.3, 'Wifi': 0.05
+}
+TANGIBLE_FACTOR_WEIGHTS = [0.45, 0.35, 0.2]
+cluster_color_code = {
+    0: 'light blue', 1: 'salmon', 2: 'green', 3: 'red', 4: 'sandybrown', 5: 'blue', 6: 'turquoise', 7: 'brown',
+    8: 'orange', 9: 'yellow', 10: 'coral', 11: 'purple', 12: 'palegoldenrod', 13: 'seashell', 14: 'olive'
+}
+mcd1, mcd2 = 'MCDQueenSpadina', 'MCDAGO'
 
 generator = GraphGenerator('vertex_data.csv', 'edge_data.csv',
                            TANGIBLE_FACTOR_WEIGHTS, INTANGIBLE_FACTOR_CATEGORIES)
 scaled_graph = generator.scaled_graph
 normal_graph = generator.normal_graph
-
-calculate_score('QueenSpadina', 'AGO', {'Vehicular Traffic': 0.175, 'Pedestrian Traffic': 0.125, 'Bike Traffic': 0.05, 'Reviews': 0.2, 'Operating Hours': 0.1, 'Drive-Thru': 0.3, 'Wifi': 0.05}, scaled_graph)
-
-cluster_color_code = {
-    0: 'light blue', 1: 'salmon', 2: 'green', 3: 'red', 4: 'sandybrown', 5: 'blue', 6: 'turquoise', 7: 'brown',
-    8: 'orange', 9: 'yellow', 10: 'coral', 11: 'purple', 12: 'palegoldenrod', 13: 'seashell', 14: 'olive'
-}
 
 # Main program loop
 state = True
@@ -48,6 +50,8 @@ while state:
     elif user_input == 'ng':
         visualize_map(normal_graph.get_vertices(), normal_graph.get_edges(), cluster_color_code)
     elif user_input == 'compute':
-        calculate_score('QueenSpadina', 'AGO', [0.175, 0.125, 0.05, 0.2, 0.1, 0.3, 0.05], scaled_graph)
+        mcd1_score, mcd2_score = calculate_score(mcd1, mcd2, INTANGIBLE_FACTOR_WEIGHTS, scaled_graph)
+        print(f'Queen-Spadina McDonald\'s score: {mcd1_score}\n'
+              f'AGO McDonald\'s score: {mcd2_score}\n')
     else:
         user_input = input("Enter a valid command: ")

@@ -31,7 +31,7 @@ class _WeightedVertex:
         - all(self in u.neighbours for u in self.neighbours)
     """
     item: str
-    vertex_data = dict
+    vertex_data = dict[str, float]
     neighbours: dict[_WeightedVertex, list[Union[int, float]]]
     cluster: int
     coordinates: tuple[float, float]
@@ -123,7 +123,7 @@ class WeightedGraph:
         """Initialize an empty graph (no vertices or edges)."""
         self.vertices = {}
 
-    def add_vertex(self, item: Any, vertex_data: dict, coordinates: tuple[float, float], vertex_type: str,
+    def add_vertex(self, item: Any, vertex_data: dict[str, float], coordinates: tuple[float, float], vertex_type: str,
                    cluster: int = 0) -> None:
         """Add a vertex with the given item to this graph.
 
@@ -223,7 +223,7 @@ class WeightedGraph:
 
         return all_edges
 
-    def get_cluster(self, cluster: int) -> dict[str, _WeightedVertex]:
+    def get_cluster(self, cluster: int) -> dict[str, _WeightedVertex] | int:
         """Returns the vertices that are part of the given cluster.
         """
         for key in self.vertices:
@@ -354,7 +354,7 @@ class GraphGenerator:
                     data_names_list = vertex_data_categories[types[4]]
                 else:
                     data_names_list = vertex_data_categories[types[5]]
-                data_dict = self._map_name_to_data(data_names_list, row)
+                data_dict = self._map_name_to_data(data_names_list, row[3:11])
                 graph.add_vertex(row[2], data_dict, (float(row[-2]), float(row[-1])), row[0], int(row[1]))
 
     def _map_name_to_data(self, data_names: list[str], row: list) -> dict[str, Any]:
@@ -363,7 +363,7 @@ class GraphGenerator:
         """
         data_dict = {}
         for i in range(len(data_names)):
-            data_dict[data_names[i]] = str(row[i])
+            data_dict[data_names[i]] = float(row[i])
         return data_dict
 
     def load_clusters(self, graph: WeightedGraph) -> None:
