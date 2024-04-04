@@ -72,6 +72,8 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
     restaurant_competiton_2 = 0
     ttc_proximity_1 = 0
     ttc_proximity_2 = 0
+    landmark_influence_1 = 0
+    landmark_influence_2 = 0
     for v in all_vertices:
         if all_vertices[v].vertex_type == 'OtherRestaurant':
             competing_score = 0.65 * all_vertices[v].vertex_data['ClientSimilarity']\
@@ -88,8 +90,13 @@ def calculate_score(franchise1: str, franchise2: str, factor_weights: dict[str, 
             ttc_proximity_1 += transit_score + ttc_range_1
             ttc_proximity_2 += transit_score + ttc_range_2
         elif all_vertices[v].vertex_type == 'Landmark':
-            landmark_score = all_vertices[v].vertex_data
+            landmark_score_f1 = (all_vertices[v].vertex_data['Significance'] *
+                                 all_vertices[v].vertex_data['DistanceAGOMCD'])
+            landmark_score_f2 = (all_vertices[v].vertex_data['Significance'] *
+                                 all_vertices[v].vertex_data['DistanceQSMCD'])
+            landmark_influence_1 += f1.best_weighted_path(v, {f2})[0] + landmark_score_f1
+            landmark_influence_2 += f2.best_weighted_path(v, {f1})[0] + landmark_score_f2
 
-    final_score1 += ttc_proximity_1 - restaurant_competiton_1 # TODO: add weights to these factors.
-    final_score2 += ttc_proximity_2 - restaurant_competiton_2
+    final_score1 += ttc_proximity_1 - restaurant_competiton_1 + landmark_influence_1
+    final_score2 += ttc_proximity_2 - restaurant_competiton_2 + landmark_influence_2
     return (round(final_score1/100, 2), round(final_score2/100, 2))

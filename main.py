@@ -28,7 +28,7 @@ INTANGIBLE_FACTOR_CATEGORIES = {
     'MCD': ['VehicularTraffic', 'PedestrianTraffic', 'BikeTraffic', 'Reviews', 'OperatingHours', 'DriveThru',
             'Wifi', 'PhysicalLimitations'],
     'OtherRestaurant': ['Reviews', 'ClientSimilarity'],
-    'Landmark': ['Significance'],
+    'Landmark': ['Significance', 'DistanceAGOMCD', 'DistanceQSMCD'],
     'IntersectionMain': ['BikePerCarRatio', 'VehicularTraffic', 'PedestrianTraffic'],
     'IntersectionSmall': [],
     'TTC': ['Ridership']
