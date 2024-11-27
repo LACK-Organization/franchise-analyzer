@@ -58,10 +58,10 @@ while STATE:
     elif USER_INPUT == 'map':
         visualize_map(SCALED_GRAPH.get_vertices(), SCALED_GRAPH.get_edges(), CLUSTER_COLOR_CODE)
     elif USER_INPUT == 'treemap1':
-        visualize_tree_map('treemap_data.csv', 'vertex_data.csv', mcd1,
+        visualize_tree_map('../data/treemap_data.csv', '../data/vertex_data.csv', mcd1,
                            INTANGIBLE_MCD_FACTOR_WEIGHTS)
     elif USER_INPUT == 'treemap2':
-        visualize_tree_map('treemap_data.csv', 'vertex_data.csv', mcd2,
+        visualize_tree_map('../data/treemap_data.csv', '../data/vertex_data.csv', mcd2,
                            INTANGIBLE_MCD_FACTOR_WEIGHTS)
     elif USER_INPUT == 'compute':
         MCD1_SCORE, MCD2_SCORE = calculate_score(mcd1, mcd2, INTANGIBLE_MCD_FACTOR_WEIGHTS, SCALED_GRAPH)
