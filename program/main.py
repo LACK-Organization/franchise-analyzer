@@ -41,7 +41,7 @@ CLUSTER_COLOR_CODE = {
 }
 mcd1, mcd2 = 'MCDQueenSpadina', 'MCDAGO'
 
-GENERATOR = GraphGenerator('vertex_data.csv', 'edge_data.csv',
+GENERATOR = GraphGenerator('../data/vertex_data.csv', '../data/edge_data.csv',
                            TANGIBLE_FACTOR_WEIGHTS, INTANGIBLE_FACTOR_CATEGORIES)
 SCALED_GRAPH = GENERATOR.scaled_graph
 NORMAL_GRAPH = GENERATOR.normal_graph
